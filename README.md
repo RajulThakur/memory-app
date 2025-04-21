@@ -1,50 +1,134 @@
-# Welcome to your Expo app 👋
+# Language Learning Flashcard App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, intuitive flashcard application for language learning, built with React Native. The app uses spaced repetition algorithms to optimize your learning experience and help you master new languages effectively.
 
-## Get started
+## Features
 
-1. Install dependencies
+### 1. Smart Learning System
+
+- **Spaced Repetition**: Uses the SM-2 algorithm to optimize review intervals
+- **Adaptive Learning**: Adjusts card frequency based on your performance
+- **Mastery Tracking**: Visual progress indicators for each deck and card
+
+### 2. Deck Management
+
+- **Multiple Decks**: Organize cards by language or topic
+- **Progress Tracking**: View statistics for each deck
+- **Easy Navigation**: Intuitive interface for managing your decks
+
+### 3. Flashcard Features
+
+- **Rich Content**: Support for text and examples
+- **Interactive Review**: Flip cards with smooth animations
+- **Performance Rating**: 6-level rating system for accurate progress tracking
+  - Perfect (5): Perfect response
+  - Good (4): Correct with hesitation
+  - Hesitant (3): Correct with significant hesitation
+  - Difficult (2): Correct after struggle
+  - Wrong (1): Incorrect but familiar
+  - Blackout (0): Complete failure to recall
+
+### 4. Statistics and Progress
+
+- **Detailed Analytics**: Track your learning progress
+- **Visual Charts**: Bar and line charts for progress visualization
+- **Performance Metrics**: Monitor mastery rates and study streaks
+
+### 5. Customization
+
+- **Theme Support**: Light and dark modes
+- **Color Schemes**: Choose from Blue, Sage, and Lavender themes
+- **Responsive Design**: Works on various screen sizes
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- React Native development environment
+
+### Installation Steps
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone [repository-url]
+   cd lang-app
+   ```
+
+2. **Install Dependencies**
 
    ```bash
    npm install
+   # or
+   yarn install
    ```
 
-2. Start the app
+3. **Start the Development Server**
 
    ```bash
-    npx expo start
+   npm start
+   # or
+   yarn start
    ```
 
-In the output, you'll find options to open the app in a
+4. **Run on iOS**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run ios
+   # or
+   yarn ios
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+5. **Run on Android**
+   ```bash
+   npm run android
+   # or
+   yarn android
+   ```
 
-## Get a fresh project
+### Configuration
 
-When you're ready, run:
+1. **Environment Setup**
 
-```bash
-npm run reset-project
+   - Make sure you have Xcode installed for iOS development
+   - Install Android Studio for Android development
+   - Configure your development environment following React Native's official guide
+
+2. **Code Formatting**
+   - The project uses Prettier for code formatting
+   - Format your code using:
+     ```bash
+     npm run format
+     # or
+     yarn format
+     ```
+
+## Project Structure
+
+```
+lang-app/
+├── app/
+│   ├── components/    # Reusable UI components
+│   ├── screens/       # Screen components
+│   ├── context/       # React Context providers
+│   ├── services/      # Business logic and services
+│   ├── utils/         # Utility functions
+│   ├── types/         # TypeScript type definitions
+│   └── data/          # Sample data and constants
+├── assets/           # Static assets
+└── ...
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Contributing
 
-## Learn more
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-To learn more about developing your project with Expo, look at the following resources:
+## License
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License - see the LICENSE file for details.
