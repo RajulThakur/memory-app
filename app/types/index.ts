@@ -1,8 +1,8 @@
-export type Language = "english" | "spanish" | "french" | "japanese" | "german";
+export type Language = 'english' | 'spanish' | 'french' | 'japanese' | 'german';
 
-export type Difficulty = "beginner" | "intermediate" | "advanced";
+export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 
-export type Category = "vocabulary" | "grammar" | "phrases" | "idioms";
+export type Category = 'vocabulary' | 'grammar' | 'phrases' | 'idioms';
 
 export interface Flashcard {
   id: string;
@@ -39,8 +39,8 @@ export interface DeckMetadata {
 export type RootStackParamList = {
   Main: undefined;
   AddCard: undefined;
-  DeckDetails: { deckId: string };
-  StudySession: { deckId: string };
+  DeckDetails: {deckId: string};
+  StudySession: {deckId: string};
 };
 
 export type MainTabParamList = {

@@ -1,19 +1,13 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-} from "react-native";
-import { useTheme } from "../context/ThemeContext";
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
+import {useTheme} from '../context/ThemeContext';
 
 export default function FlashcardView() {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentCard, setCurrentCard] = useState({
-    front: "1",
-    back: "One",
+    front: '1',
+    back: 'One',
     ef: 2.5,
     interval: 1,
   });
@@ -30,38 +24,35 @@ export default function FlashcardView() {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={[styles.card, { backgroundColor: colors.surface }]}
-        onPress={handleFlip}>
+        style={[styles.card, {backgroundColor: colors.surface}]}
+        onPress={handleFlip}
+      >
         <View style={styles.cardInner}>
-          <Text style={[styles.cardText, { color: colors.text }]}>
+          <Text style={[styles.cardText, {color: colors.text}]}>
             {isFlipped ? currentCard.back : currentCard.front}
           </Text>
         </View>
       </TouchableOpacity>
 
       <View style={styles.statsContainer}>
-        <Text style={[styles.statsText, { color: colors.textSecondary }]}>
+        <Text style={[styles.statsText, {color: colors.textSecondary}]}>
           EF: {currentCard.ef.toFixed(2)}
         </Text>
-        <Text style={[styles.statsText, { color: colors.textSecondary }]}>
+        <Text style={[styles.statsText, {color: colors.textSecondary}]}>
           Next review: {currentCard.interval} days
         </Text>
       </View>
 
       {isFlipped && (
         <View style={styles.scoreContainer}>
-          <Text style={[styles.scoreTitle, { color: colors.text }]}>
-            How well did you remember?
-          </Text>
+          <Text style={[styles.scoreTitle, {color: colors.text}]}>How well did you remember?</Text>
           <View style={styles.scoreButtons}>
-            {[1, 2, 3, 4, 5].map((score) => (
+            {[1, 2, 3, 4, 5].map(score => (
               <TouchableOpacity
                 key={score}
-                style={[
-                  styles.scoreButton,
-                  { backgroundColor: colors.primary },
-                ]}
-                onPress={() => handleScore(score)}>
+                style={[styles.scoreButton, {backgroundColor: colors.primary}]}
+                onPress={() => handleScore(score)}
+              >
                 <Text style={styles.scoreButtonText}>{score}</Text>
               </TouchableOpacity>
             ))}
@@ -75,32 +66,32 @@ export default function FlashcardView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   card: {
-    width: "90%",
+    width: '90%',
     aspectRatio: 1.5,
     borderRadius: 20,
     elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
   cardInner: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   cardText: {
     fontSize: 24,
-    textAlign: "center",
+    textAlign: 'center',
   },
   statsContainer: {
     marginTop: 20,
-    alignItems: "center",
+    alignItems: 'center',
   },
   statsText: {
     fontSize: 16,
@@ -108,28 +99,28 @@ const styles = StyleSheet.create({
   },
   scoreContainer: {
     marginTop: 30,
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
   },
   scoreTitle: {
     fontSize: 18,
     marginBottom: 15,
   },
   scoreButtons: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     gap: 10,
   },
   scoreButton: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   scoreButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
