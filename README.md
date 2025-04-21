@@ -4,7 +4,7 @@ A modern, intuitive flashcard application for language learning, built with Reac
 
 ## Demo
 
-[![Watch the demo](https://res.cloudinary.com/dqglgc5dj/image/upload/c_pad,h_512/v1745247215/Screenshot_2025-04-21_at_20.22.47_pjwqtv.png)](https://res.cloudinary.com/dqglgc5dj/video/upload/v1745246679/demo_zaiui4.mp4)
+[![Watch the demo](https://res.cloudinary.com/dqglgc5dj/image/upload/v1745247377/Screenshot_2025-04-21_at_20.22.47_pjwqtv_c_pad_h_512_bvv9zd.png)](https://res.cloudinary.com/dqglgc5dj/video/upload/v1745246679/demo_zaiui4.mp4)
 
 ## Features
 
