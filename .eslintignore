@@ -1,0 +1,9 @@
+node_modules/
+ios/
+android/
+*.config.js
+*.min.js
+dist/
+build/
+coverage/
+*.d.ts 
