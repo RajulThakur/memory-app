@@ -17,12 +17,13 @@ export interface Flashcard {
   example: string;
   lastReviewed?: Date;
   mastered: boolean;
+  deckId: string;
 }
 
 const dummyDecks: DeckMetadata[] = [
   {
     id: 'deck1',
-    name: 'Basic Japanese Phrases',
+    name: 'Japanese',
     description: 'Essential phrases for daily conversation',
     language: 'japanese' as Language,
     category: 'phrases' as Category,
@@ -34,7 +35,7 @@ const dummyDecks: DeckMetadata[] = [
   },
   {
     id: 'deck2',
-    name: 'Spanish Verbs',
+    name: 'Spanish',
     description: 'Common Spanish verbs and conjugations',
     language: 'spanish' as Language,
     category: 'grammar' as Category,
@@ -46,7 +47,7 @@ const dummyDecks: DeckMetadata[] = [
   },
   {
     id: 'deck3',
-    name: 'French Travel Vocabulary',
+    name: 'French',
     description: 'Words and phrases for traveling in France',
     language: 'french' as Language,
     category: 'vocabulary' as Category,
@@ -58,7 +59,7 @@ const dummyDecks: DeckMetadata[] = [
   },
   {
     id: 'deck4',
-    name: 'German Idioms',
+    name: 'German',
     description: 'Common German idioms and expressions',
     language: 'german' as Language,
     category: 'idioms' as Category,
@@ -70,7 +71,7 @@ const dummyDecks: DeckMetadata[] = [
   },
   {
     id: 'deck5',
-    name: 'English Business Terms',
+    name: 'English',
     description: 'Business vocabulary and phrases',
     language: 'english' as Language,
     category: 'vocabulary' as Category,
@@ -96,6 +97,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck1',
+      mastered: false,
     },
     {
       id: 'card2',
@@ -109,6 +112,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck1',
+      mastered: false,
     },
   ],
   deck2: [
@@ -124,6 +129,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck2',
+      mastered: false,
     },
     {
       id: 'card4',
@@ -137,6 +144,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck2',
+      mastered: false,
     },
   ],
   deck3: [
@@ -152,6 +161,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck3',
+      mastered: false,
     },
     {
       id: 'card6',
@@ -165,6 +176,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck3',
+      mastered: false,
     },
   ],
   deck4: [
@@ -181,6 +194,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck4',
+      mastered: false,
     },
     {
       id: 'card8',
@@ -194,6 +209,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck4',
+      mastered: false,
     },
   ],
   deck5: [
@@ -209,6 +226,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck5',
+      mastered: false,
     },
     {
       id: 'card10',
@@ -222,6 +241,8 @@ const dummyCards: Record<string, Flashcard[]> = {
       ef: 2.5,
       interval: 1,
       repetitions: 0,
+      deckId: 'deck5',
+      mastered: false,
     },
   ],
 };

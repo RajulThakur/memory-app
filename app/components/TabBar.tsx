@@ -56,10 +56,12 @@ export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     borderTopWidth: 1,
+    display: 'flex',
     flexDirection: 'row',
-    height: 80,
-    paddingBottom: 20,
+    height: 70,
+    justifyContent: 'space-between',
   },
   tab: {
     alignItems: 'center',

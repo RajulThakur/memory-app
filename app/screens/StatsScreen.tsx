@@ -6,6 +6,7 @@ import { BarChart, LineChart } from 'react-native-chart-kit';
 import { Award, Clock, Book, Target } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
+const chartWidth = width - 32; // 16px padding on each side
 
 export default function StatsScreen() {
   const { colors } = useTheme();
@@ -25,7 +26,7 @@ export default function StatsScreen() {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [fadeAnim, slideAnim]);
 
   const stats = {
     totalCards: dummyDecks.reduce((sum, deck) => sum + deck.totalCards, 0),
@@ -56,7 +57,7 @@ export default function StatsScreen() {
     ],
   };
 
-  const StatCard = ({
+  function StatCard({
     title,
     value,
     icon: Icon,
@@ -66,32 +67,31 @@ export default function StatsScreen() {
     value: number;
     icon: any;
     color: string;
-  }) => (
-    <Animated.View
-      style={[
-        styles.statCard,
-        {
-          backgroundColor: colors.surface,
-          opacity: fadeAnim,
-          transform: [{ translateY: slideAnim }],
-        },
-      ]}
-    >
-      <View style={[styles.iconContainer, { backgroundColor: color }]}>
-        <Icon size={24} color="#fff" />
+  }) {
+    return (
+      <View
+        style={[
+          styles.statCard,
+          {
+            backgroundColor: colors.surface,
+          },
+        ]}
+      >
+        <View style={[styles.iconContainer, { backgroundColor: color }]}>
+          <Icon size={24} color="#fff" />
+        </View>
+        <Text style={[styles.statValue, { color: colors.text }]}>{value}</Text>
+        <Text style={[styles.statTitle, { color: colors.textSecondary }]}>{title}</Text>
       </View>
-      <Text style={[styles.statValue, { color: colors.text }]}>{value}</Text>
-      <Text style={[styles.statTitle, { color: colors.textSecondary }]}>{title}</Text>
-    </Animated.View>
-  );
+    );
+  }
 
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
     >
-      <Text style={[styles.title, { color: colors.text }]}>Statistics</Text>
-
       <View style={styles.statsGrid}>
         <StatCard title="Total Cards" value={stats.totalCards} icon={Book} color={colors.primary} />
         <StatCard
@@ -109,61 +109,59 @@ export default function StatsScreen() {
         />
       </View>
 
-      <Animated.View
+      <View
         style={[
           styles.chartContainer,
           {
+            alignItems: 'center',
             backgroundColor: colors.surface,
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
           },
         ]}
       >
         <Text style={[styles.chartTitle, { color: colors.text }]}>Deck Mastery</Text>
         <BarChart
           data={chartData}
-          width={width - 48}
+          width={width}
           height={220}
           chartConfig={{
             backgroundColor: colors.surface,
             backgroundGradientFrom: colors.surface,
             backgroundGradientTo: colors.surface,
             decimalPlaces: 0,
-            color: (opacity = 1) => colors.primary,
-            labelColor: (opacity = 1) => colors.text,
+            color: () => colors.primary,
+            labelColor: () => colors.text,
             style: {
               borderRadius: 16,
             },
           }}
           style={styles.chart}
-          yAxisSuffix="%"
           showBarTops={false}
           fromZero
+          yAxisLabel="%"
         />
-      </Animated.View>
+      </View>
 
-      <Animated.View
+      <View
         style={[
           styles.chartContainer,
           {
             backgroundColor: colors.surface,
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
+            alignItems: 'center',
           },
         ]}
       >
         <Text style={[styles.chartTitle, { color: colors.text }]}>Weekly Progress</Text>
         <LineChart
           data={weeklyProgress}
-          width={width - 48}
+          width={chartWidth}
           height={220}
           chartConfig={{
             backgroundColor: colors.surface,
             backgroundGradientFrom: colors.surface,
             backgroundGradientTo: colors.surface,
             decimalPlaces: 0,
-            color: (opacity = 1) => colors.primary,
-            labelColor: (opacity = 1) => colors.text,
+            color: () => colors.primary,
+            labelColor: () => colors.text,
             style: {
               borderRadius: 16,
             },
@@ -171,17 +169,21 @@ export default function StatsScreen() {
           style={styles.chart}
           bezier
         />
-      </Animated.View>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   chart: {
-    borderRadius: 16,
-    marginVertical: 8,
+    borderRadius: 1,
+    marginHorizontal: 'auto',
+    marginVertical: 2,
   },
   chartContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 12,
     elevation: 2,
     marginBottom: 16,
@@ -239,11 +241,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 24,
   },
 });

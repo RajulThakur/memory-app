@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Animated,
+  ScrollView,
+} from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { dummyDecks, dummyCards } from '../data/dummyData';
-import { RotateCcw, Trash2, Check } from 'lucide-react-native';
+import { RotateCcw, Trash2, Check, PlayCircle } from 'lucide-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList, Flashcard } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DeckDetails'>;
 
-const FlashcardItem = ({ card }: { card: Flashcard }) => {
+function FlashcardItem({ card }: { card: Flashcard }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const { colors } = useTheme();
   const flipAnimation = new Animated.Value(0);
@@ -79,13 +87,13 @@ const FlashcardItem = ({ card }: { card: Flashcard }) => {
       </View>
     </View>
   );
-};
+}
 
 const DeckDetailsScreen = ({ route, navigation }: Props) => {
   const { colors } = useTheme();
   const { deckId } = route.params;
   const deck = dummyDecks.find(d => d.id === deckId);
-  const deckCards = dummyCards.filter((card: Flashcard) => card.deckId === deckId);
+  const deckCards = dummyCards[deckId] || [];
 
   if (!deck) {
     return (
@@ -95,13 +103,27 @@ const DeckDetailsScreen = ({ route, navigation }: Props) => {
     );
   }
 
+  const masteredCount = deckCards.filter(card => card.mastered).length;
+
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: colors.background }]}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>{deck.name}</Text>
+        <View style={styles.headerTop}>
+          <Text style={[styles.title, { color: colors.text }]}>{deck.name}</Text>
+          <TouchableOpacity
+            style={[styles.reviewButton, { backgroundColor: colors.primary }]}
+            onPress={() => navigation.navigate('StudySession', { deckId })}
+          >
+            <PlayCircle size={24} color="#fff" />
+            <Text style={styles.reviewButtonText}>Start Review</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-          {deckCards.length} cards • {deckCards.filter((c: Flashcard) => c.mastered).length}{' '}
-          mastered
+          {deckCards.length} cards • {masteredCount} mastered
         </Text>
       </View>
       <FlatList
@@ -109,66 +131,62 @@ const DeckDetailsScreen = ({ route, navigation }: Props) => {
         keyExtractor={(item: Flashcard) => item.id}
         renderItem={({ item }: { item: Flashcard }) => <FlashcardItem card={item} />}
         contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
       />
-    </View>
+    </ScrollView>
   );
 };
 
 export default DeckDetailsScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  actionButton: {
+    alignItems: 'center',
+    borderRadius: 20,
+    height: 40,
+    justifyContent: 'center',
+    width: 40,
   },
-  header: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 16,
-  },
-  stats: {
+  actions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  stat: {
-    fontSize: 14,
-  },
-  list: {
-    padding: 20,
-  },
-  cardContainer: {
-    marginBottom: 20,
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    justifyContent: 'space-around',
+    marginTop: 16,
   },
   card: {
-    height: 200,
-    justifyContent: 'center',
     alignItems: 'center',
     backfaceVisibility: 'hidden',
+    height: 200,
+    justifyContent: 'center',
   },
   cardBack: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  cardContainer: {
+    borderRadius: 12,
+    elevation: 2,
+    marginBottom: 20,
+    padding: 16,
+    shadowOffset: { height: 2, width: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   cardText: {
     fontSize: 18,
+    textAlign: 'center',
+  },
+  container: {
+    flex: 1,
+  },
+  content: {
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 18,
+    marginTop: 20,
     textAlign: 'center',
   },
   exampleText: {
@@ -176,21 +194,45 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: 'center',
   },
-  actions: {
+  header: {
+    borderBottomWidth: 1,
+    padding: 20,
+  },
+  headerTop: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 16,
-  },
-  actionButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 8,
   },
-  errorText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 20,
+  list: {
+    padding: 20,
+  },
+  reviewButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderRadius: 8,
+    gap: 8,
+  },
+  reviewButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  stat: {
+    fontSize: 14,
+  },
+  stats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
 });

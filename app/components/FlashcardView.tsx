@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { colorSchemes, useTheme } from '../context/ThemeContext';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 
 export default function FlashcardView() {
   const { colors } = useTheme();

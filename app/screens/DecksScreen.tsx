@@ -1,9 +1,9 @@
+import { useRouter } from 'expo-router';
+import { Book, ChevronRight } from 'lucide-react-native';
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { dummyDecks } from '../data/dummyData';
-import { Book, ChevronRight } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
 
 interface DeckCardProps {
   name: string;
@@ -64,6 +64,7 @@ export default function DecksScreen() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         data={dummyDecks}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <DeckCard
@@ -72,14 +73,14 @@ export default function DecksScreen() {
             language={item.language}
             totalCards={item.totalCards}
             masteredCards={item.masteredCards}
-            onPress={() => router.push(`/deck/${item.id}`)}
+            onPress={() => router.push(`/DeckDetailsScreen`)}
           />
         )}
         contentContainerStyle={styles.list}
       />
       <TouchableOpacity
         style={[styles.fab, { backgroundColor: colors.primary }]}
-        onPress={() => router.push('/add-card')}
+        onPress={() => router.push('/AddCardScreen')}
       >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>

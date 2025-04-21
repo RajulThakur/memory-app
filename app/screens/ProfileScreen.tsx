@@ -50,6 +50,7 @@ export default function ProfileScreen() {
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
     >
       <Animated.View
         style={[

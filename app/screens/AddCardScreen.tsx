@@ -1,21 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { Check, X } from 'lucide-react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../types';
+import { flashcardService } from '../services/flashcardService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddCard'>;
 
-const AddCardScreen: React.FC<Props> = ({ navigation }) => {
+function AddCardScreen({ route, navigation }: Props) {
+  const { deckId } = route.params;
   const { colors } = useTheme();
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
   const [example, setExample] = useState('');
 
+  useEffect(() => {
+    flashcardService.setCurrentDeck(deckId);
+  }, [deckId]);
+
   const handleAddCard = () => {
-    // TODO: Implement card addition logic
-    navigation.goBack();
+    if (!front.trim() || !back.trim()) return;
+
+    flashcardService.addCard(deckId, {
+      front: front.trim(),
+      back: back.trim(),
+      example: example.trim(),
+      deckId,
+    });
+
+    // Clear form
+    setFront('');
+    setBack('');
+    setExample('');
+
+    // Show next card if available
+    const nextCard = flashcardService.moveToNextCard();
+    if (nextCard) {
+      setFront(nextCard.front);
+      setBack(nextCard.back);
+      setExample(nextCard.example || '');
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -31,6 +58,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity
           onPress={handleAddCard}
           style={[styles.button, { backgroundColor: colors.success }]}
+          disabled={!front.trim() || !back.trim()}
         >
           <Check size={24} color="#fff" />
         </TouchableOpacity>
@@ -96,7 +124,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -117,6 +145,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 8,
     borderRadius: 20,
+    opacity: 1,
   },
   content: {
     flex: 1,
