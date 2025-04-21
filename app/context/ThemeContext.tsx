@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 export type ColorScheme = 'blue' | 'sage' | 'lavender';
 export type Theme = 'light' | 'dark';
@@ -129,7 +129,7 @@ const darkColors = {
   progressTrack: '#2D2D2D',
 };
 
-export function ThemeProvider({children}: {children: React.ReactNode}) {
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
   const [colorScheme, setColorScheme] = useState<ColorScheme>('blue');
 

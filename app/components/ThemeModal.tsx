@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Modal, Pressable} from 'react-native';
-import {Palette, MoonIcon, SunIcon} from 'lucide-react-native';
-import {useTheme} from '../context/ThemeContext';
-import type {ColorScheme} from '../context/ThemeContext';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, Pressable } from 'react-native';
+import { Palette, MoonIcon, SunIcon } from 'lucide-react-native';
+import { useTheme } from '../context/ThemeContext';
+import type { ColorScheme } from '../context/ThemeContext';
 
 interface ColorSchemeButtonProps {
   name: string;
@@ -11,13 +11,13 @@ interface ColorSchemeButtonProps {
   onPress: () => void;
 }
 
-function ColorSchemeButton({name, color, isSelected, onPress}: ColorSchemeButtonProps) {
+function ColorSchemeButton({ name, color, isSelected, onPress }: ColorSchemeButtonProps) {
   return (
     <Pressable
       onPress={onPress}
       style={[
         styles.colorSchemeButton,
-        {backgroundColor: color},
+        { backgroundColor: color },
         isSelected && styles.selectedScheme,
       ]}
     >
@@ -31,8 +31,8 @@ interface ThemeModalProps {
   onClose: () => void;
 }
 
-export default function ThemeModal({visible, onClose}: ThemeModalProps) {
-  const {colors, toggleTheme, colorScheme, setColorScheme, theme} = useTheme();
+export default function ThemeModal({ visible, onClose }: ThemeModalProps) {
+  const { colors, toggleTheme, colorScheme, setColorScheme, theme } = useTheme();
 
   const handleColorSchemeChange = (scheme: ColorScheme) => {
     setColorScheme(scheme);
@@ -45,26 +45,15 @@ export default function ThemeModal({visible, onClose}: ThemeModalProps) {
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="fade"
-      onRequestClose={onClose}
-    >
-      <Pressable
-        style={styles.modalOverlay}
-        onPress={onClose}
-      >
+    <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onClose}>
+      <Pressable style={styles.modalOverlay} onPress={onClose}>
         <View
-          style={[styles.modalContent, {backgroundColor: colors.surface}]}
+          style={[styles.modalContent, { backgroundColor: colors.surface }]}
           onStartShouldSetResponder={() => true}
         >
           <View style={styles.modalHeader}>
-            <Text style={[styles.modalTitle, {color: colors.text}]}>Color Scheme</Text>
-            <Palette
-              size={24}
-              color={colors.primary}
-            />
+            <Text style={[styles.modalTitle, { color: colors.text }]}>Color Scheme</Text>
+            <Palette size={24} color={colors.primary} />
           </View>
 
           <View style={styles.themeOptions}>
@@ -89,25 +78,17 @@ export default function ThemeModal({visible, onClose}: ThemeModalProps) {
           </View>
 
           <TouchableOpacity
-            style={[styles.darkModeButton, {backgroundColor: colors.primary}]}
+            style={[styles.darkModeButton, { backgroundColor: colors.primary }]}
             onPress={handleThemeToggle}
           >
             {theme === 'light' ? (
               <View style={styles.buttonContent}>
-                <MoonIcon
-                  size={20}
-                  color="#fff"
-                  style={styles.buttonIcon}
-                />
+                <MoonIcon size={20} color="#fff" style={styles.buttonIcon} />
                 <Text style={styles.darkModeButtonText}>Switch to Dark Mode</Text>
               </View>
             ) : (
               <View style={styles.buttonContent}>
-                <SunIcon
-                  size={20}
-                  color="#fff"
-                  style={styles.buttonIcon}
-                />
+                <SunIcon size={20} color="#fff" style={styles.buttonIcon} />
                 <Text style={styles.darkModeButtonText}>Switch to Light Mode</Text>
               </View>
             )}

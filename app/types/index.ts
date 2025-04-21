@@ -39,8 +39,8 @@ export interface DeckMetadata {
 export type RootStackParamList = {
   Main: undefined;
   AddCard: undefined;
-  DeckDetails: {deckId: string};
-  StudySession: {deckId: string};
+  DeckDetails: { deckId: string };
+  StudySession: { deckId: string };
 };
 
 export type MainTabParamList = {

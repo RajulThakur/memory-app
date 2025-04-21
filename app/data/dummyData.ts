@@ -1,4 +1,4 @@
-import type {DeckMetadata, Flashcard, Language, Category, Difficulty} from '../types';
+import type { DeckMetadata, Flashcard, Language, Category, Difficulty } from '../types';
 
 export interface Deck {
   id: string;
@@ -226,5 +226,5 @@ const dummyCards: Record<string, Flashcard[]> = {
   ],
 };
 
-export {dummyDecks, dummyCards};
-export default {dummyDecks, dummyCards};
+export { dummyDecks, dummyCards };
+export default { dummyDecks, dummyCards };

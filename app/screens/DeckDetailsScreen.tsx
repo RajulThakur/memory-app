@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity, Animated} from 'react-native';
-import {useTheme} from '../context/ThemeContext';
-import {dummyDecks, dummyCards} from '../data/dummyData';
-import {RotateCcw, Trash2, Check} from 'lucide-react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList, Flashcard} from '../types';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { dummyDecks, dummyCards } from '../data/dummyData';
+import { RotateCcw, Trash2, Check } from 'lucide-react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList, Flashcard } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DeckDetails'>;
 
-const FlashcardItem = ({card}: {card: Flashcard}) => {
+const FlashcardItem = ({ card }: { card: Flashcard }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const flipAnimation = new Animated.Value(0);
 
   const flipCard = () => {
@@ -34,81 +34,72 @@ const FlashcardItem = ({card}: {card: Flashcard}) => {
   });
 
   return (
-    <View style={[styles.cardContainer, {backgroundColor: colors.surface}]}>
+    <View style={[styles.cardContainer, { backgroundColor: colors.surface }]}>
       <TouchableOpacity onPress={flipCard}>
         <Animated.View
           style={[
             styles.card,
             {
-              transform: [{rotateY: frontInterpolate}],
+              transform: [{ rotateY: frontInterpolate }],
             },
           ]}
         >
-          <Text style={[styles.cardText, {color: colors.text}]}>{card.front}</Text>
+          <Text style={[styles.cardText, { color: colors.text }]}>{card.front}</Text>
         </Animated.View>
         <Animated.View
           style={[
             styles.card,
             styles.cardBack,
             {
-              transform: [{rotateY: backInterpolate}],
+              transform: [{ rotateY: backInterpolate }],
             },
           ]}
         >
-          <Text style={[styles.cardText, {color: colors.text}]}>{card.back}</Text>
+          <Text style={[styles.cardText, { color: colors.text }]}>{card.back}</Text>
           {card.example && (
-            <Text style={[styles.exampleText, {color: colors.textSecondary}]}>
+            <Text style={[styles.exampleText, { color: colors.textSecondary }]}>
               Example: {card.example}
             </Text>
           )}
         </Animated.View>
       </TouchableOpacity>
       <View style={styles.actions}>
-        <TouchableOpacity style={[styles.actionButton, {backgroundColor: colors.error}]}>
-          <Trash2
-            size={20}
-            color="#fff"
-          />
+        <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.error }]}>
+          <Trash2 size={20} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.actionButton, {backgroundColor: colors.primary}]}
+          style={[styles.actionButton, { backgroundColor: colors.primary }]}
           onPress={flipCard}
         >
-          <RotateCcw
-            size={20}
-            color="#fff"
-          />
+          <RotateCcw size={20} color="#fff" />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.actionButton, {backgroundColor: colors.success}]}>
-          <Check
-            size={20}
-            color="#fff"
-          />
+        <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.success }]}>
+          <Check size={20} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const DeckDetailsScreen = ({route, navigation}: Props) => {
-  const {colors} = useTheme();
-  const {deckId} = route.params;
+const DeckDetailsScreen = ({ route, navigation }: Props) => {
+  const { colors } = useTheme();
+  const { deckId } = route.params;
   const deck = dummyDecks.find(d => d.id === deckId);
   const deckCards = dummyCards.filter((card: Flashcard) => card.deckId === deckId);
 
   if (!deck) {
     return (
-      <View style={[styles.container, {backgroundColor: colors.background}]}>
-        <Text style={[styles.errorText, {color: colors.text}]}>Deck not found</Text>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <Text style={[styles.errorText, { color: colors.text }]}>Deck not found</Text>
       </View>
     );
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, {color: colors.text}]}>{deck.name}</Text>
-        <Text style={[styles.subtitle, {color: colors.textSecondary}]}>
+        <Text style={[styles.title, { color: colors.text }]}>{deck.name}</Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
           {deckCards.length} cards • {deckCards.filter((c: Flashcard) => c.mastered).length}{' '}
           mastered
         </Text>
@@ -116,7 +107,7 @@ const DeckDetailsScreen = ({route, navigation}: Props) => {
       <FlatList
         data={deckCards}
         keyExtractor={(item: Flashcard) => item.id}
-        renderItem={({item}: {item: Flashcard}) => <FlashcardItem card={item} />}
+        renderItem={({ item }: { item: Flashcard }) => <FlashcardItem card={item} />}
         contentContainerStyle={styles.list}
       />
     </View>
@@ -158,7 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,

@@ -1,14 +1,14 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, ScrollView, Animated, Dimensions} from 'react-native';
-import {useTheme} from '../context/ThemeContext';
-import {dummyDecks} from '../data/dummyData';
-import {BarChart, LineChart} from 'react-native-chart-kit';
-import {Award, Clock, Book, Target} from 'lucide-react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { dummyDecks } from '../data/dummyData';
+import { BarChart, LineChart } from 'react-native-chart-kit';
+import { Award, Clock, Book, Target } from 'lucide-react-native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function StatsScreen() {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
 
@@ -73,47 +73,34 @@ export default function StatsScreen() {
         {
           backgroundColor: colors.surface,
           opacity: fadeAnim,
-          transform: [{translateY: slideAnim}],
+          transform: [{ translateY: slideAnim }],
         },
       ]}
     >
-      <View style={[styles.iconContainer, {backgroundColor: color}]}>
-        <Icon
-          size={24}
-          color="#fff"
-        />
+      <View style={[styles.iconContainer, { backgroundColor: color }]}>
+        <Icon size={24} color="#fff" />
       </View>
-      <Text style={[styles.statValue, {color: colors.text}]}>{value}</Text>
-      <Text style={[styles.statTitle, {color: colors.textSecondary}]}>{title}</Text>
+      <Text style={[styles.statValue, { color: colors.text }]}>{value}</Text>
+      <Text style={[styles.statTitle, { color: colors.textSecondary }]}>{title}</Text>
     </Animated.View>
   );
 
   return (
     <ScrollView
-      style={[styles.container, {backgroundColor: colors.background}]}
+      style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.content}
     >
-      <Text style={[styles.title, {color: colors.text}]}>Statistics</Text>
+      <Text style={[styles.title, { color: colors.text }]}>Statistics</Text>
 
       <View style={styles.statsGrid}>
-        <StatCard
-          title="Total Cards"
-          value={stats.totalCards}
-          icon={Book}
-          color={colors.primary}
-        />
+        <StatCard title="Total Cards" value={stats.totalCards} icon={Book} color={colors.primary} />
         <StatCard
           title="Mastered"
           value={stats.masteredCards}
           icon={Award}
           color={colors.success}
         />
-        <StatCard
-          title="Total Decks"
-          value={stats.totalDecks}
-          icon={Target}
-          color={colors.error}
-        />
+        <StatCard title="Total Decks" value={stats.totalDecks} icon={Target} color={colors.error} />
         <StatCard
           title="Average Mastery"
           value={stats.averageMastery}
@@ -128,11 +115,11 @@ export default function StatsScreen() {
           {
             backgroundColor: colors.surface,
             opacity: fadeAnim,
-            transform: [{translateY: slideAnim}],
+            transform: [{ translateY: slideAnim }],
           },
         ]}
       >
-        <Text style={[styles.chartTitle, {color: colors.text}]}>Deck Mastery</Text>
+        <Text style={[styles.chartTitle, { color: colors.text }]}>Deck Mastery</Text>
         <BarChart
           data={chartData}
           width={width - 48}
@@ -161,11 +148,11 @@ export default function StatsScreen() {
           {
             backgroundColor: colors.surface,
             opacity: fadeAnim,
-            transform: [{translateY: slideAnim}],
+            transform: [{ translateY: slideAnim }],
           },
         ]}
       >
-        <Text style={[styles.chartTitle, {color: colors.text}]}>Weekly Progress</Text>
+        <Text style={[styles.chartTitle, { color: colors.text }]}>Weekly Progress</Text>
         <LineChart
           data={weeklyProgress}
           width={width - 48}
@@ -190,57 +177,20 @@ export default function StatsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 0,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 24,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
-  statCard: {
-    width: '48%',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  statTitle: {
-    fontSize: 14,
+  chart: {
+    borderRadius: 16,
+    marginVertical: 8,
   },
   chartContainer: {
-    padding: 16,
     borderRadius: 12,
-    marginBottom: 16,
     elevation: 2,
+    marginBottom: 16,
+    padding: 16,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
@@ -249,8 +199,51 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 16,
   },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
+  container: {
+    flex: 1,
+  },
+  content: {
+    padding: 0,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    borderRadius: 20,
+    height: 40,
+    justifyContent: 'center',
+    marginBottom: 8,
+    width: 40,
+  },
+  statCard: {
+    borderRadius: 12,
+    elevation: 2,
+    marginBottom: 16,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    width: '48%',
+  },
+  statTitle: {
+    fontSize: 14,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 24,
   },
 });

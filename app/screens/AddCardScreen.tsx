@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
-import {useTheme} from '../context/ThemeContext';
-import {Check, X} from 'lucide-react-native';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {RootStackParamList} from '../types';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { Check, X } from 'lucide-react-native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddCard'>;
 
-const AddCardScreen: React.FC<Props> = ({navigation}) => {
-  const {colors} = useTheme();
+const AddCardScreen: React.FC<Props> = ({ navigation }) => {
+  const { colors } = useTheme();
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
   const [example, setExample] = useState('');
@@ -19,32 +19,26 @@ const AddCardScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[styles.button, {backgroundColor: colors.error}]}
+          style={[styles.button, { backgroundColor: colors.error }]}
         >
-          <X
-            size={24}
-            color="#fff"
-          />
+          <X size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={[styles.title, {color: colors.text}]}>Add New Card</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Add New Card</Text>
         <TouchableOpacity
           onPress={handleAddCard}
-          style={[styles.button, {backgroundColor: colors.success}]}
+          style={[styles.button, { backgroundColor: colors.success }]}
         >
-          <Check
-            size={24}
-            color="#fff"
-          />
+          <Check size={24} color="#fff" />
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.content}>
         <View style={styles.inputGroup}>
-          <Text style={[styles.label, {color: colors.text}]}>Front</Text>
+          <Text style={[styles.label, { color: colors.text }]}>Front</Text>
           <TextInput
             style={[
               styles.input,
@@ -63,7 +57,7 @@ const AddCardScreen: React.FC<Props> = ({navigation}) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={[styles.label, {color: colors.text}]}>Back</Text>
+          <Text style={[styles.label, { color: colors.text }]}>Back</Text>
           <TextInput
             style={[
               styles.input,
@@ -82,7 +76,7 @@ const AddCardScreen: React.FC<Props> = ({navigation}) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={[styles.label, {color: colors.text}]}>Example</Text>
+          <Text style={[styles.label, { color: colors.text }]}>Example</Text>
           <TextInput
             style={[
               styles.input,

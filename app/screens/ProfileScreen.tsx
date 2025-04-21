@@ -1,10 +1,10 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity, Image} from 'react-native';
-import {useTheme} from '../context/ThemeContext';
-import {User, Settings, Bell, Bookmark, LogOut, ChevronRight} from 'lucide-react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
+import { User, Settings, Bell, Bookmark, LogOut, ChevronRight } from 'lucide-react-native';
+import { useTheme } from '../context/ThemeContext';
 
 export default function ProfileScreen() {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
 
@@ -33,28 +33,22 @@ export default function ProfileScreen() {
     onPress: () => void;
   }) => (
     <TouchableOpacity
-      style={[styles.menuItem, {backgroundColor: colors.surface}]}
+      style={[styles.menuItem, { backgroundColor: colors.surface }]}
       onPress={onPress}
     >
       <View style={styles.menuItemLeft}>
-        <View style={[styles.iconContainer, {backgroundColor: colors.primary}]}>
-          <Icon
-            size={20}
-            color="#fff"
-          />
+        <View style={[styles.iconContainer, { backgroundColor: colors.primary }]}>
+          <Icon size={20} color="#fff" />
         </View>
-        <Text style={[styles.menuItemText, {color: colors.text}]}>{title}</Text>
+        <Text style={[styles.menuItemText, { color: colors.text }]}>{title}</Text>
       </View>
-      <ChevronRight
-        size={20}
-        color={colors.textSecondary}
-      />
+      <ChevronRight size={20} color={colors.textSecondary} />
     </TouchableOpacity>
   );
 
   return (
     <ScrollView
-      style={[styles.container, {backgroundColor: colors.background}]}
+      style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.content}
     >
       <Animated.View
@@ -63,60 +57,41 @@ export default function ProfileScreen() {
           {
             backgroundColor: colors.surface,
             opacity: fadeAnim,
-            transform: [{translateY: slideAnim}],
+            transform: [{ translateY: slideAnim }],
           },
         ]}
       >
         <View style={styles.avatarContainer}>
-          <View style={[styles.avatar, {backgroundColor: colors.primary}]}>
-            <User
-              size={40}
-              color="#fff"
-            />
+          <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
+            <User size={40} color="#fff" />
           </View>
         </View>
-        <Text style={[styles.name, {color: colors.text}]}>John Doe</Text>
-        <Text style={[styles.email, {color: colors.textSecondary}]}>john.doe@example.com</Text>
+        <Text style={[styles.name, { color: colors.text }]}>John Doe</Text>
+        <Text style={[styles.email, { color: colors.textSecondary }]}>john.doe@example.com</Text>
       </Animated.View>
 
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, {color: colors.text}]}>150</Text>
-          <Text style={[styles.statLabel, {color: colors.textSecondary}]}>Cards Studied</Text>
+          <Text style={[styles.statValue, { color: colors.text }]}>150</Text>
+          <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Cards Studied</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, {color: colors.text}]}>5</Text>
-          <Text style={[styles.statLabel, {color: colors.textSecondary}]}>Active Streak</Text>
+          <Text style={[styles.statValue, { color: colors.text }]}>5</Text>
+          <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Active Streak</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, {color: colors.text}]}>85%</Text>
-          <Text style={[styles.statLabel, {color: colors.textSecondary}]}>Mastery Rate</Text>
+          <Text style={[styles.statValue, { color: colors.text }]}>85%</Text>
+          <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Mastery Rate</Text>
         </View>
       </View>
 
       <View style={styles.menuContainer}>
-        <MenuItem
-          icon={Settings}
-          title="Settings"
-          onPress={() => {}}
-        />
-        <MenuItem
-          icon={Bell}
-          title="Notifications"
-          onPress={() => {}}
-        />
-        <MenuItem
-          icon={Bookmark}
-          title="Saved Cards"
-          onPress={() => {}}
-        />
-        <MenuItem
-          icon={LogOut}
-          title="Log Out"
-          onPress={() => {}}
-        />
+        <MenuItem icon={Settings} title="Settings" onPress={() => {}} />
+        <MenuItem icon={Bell} title="Notifications" onPress={() => {}} />
+        <MenuItem icon={Bookmark} title="Saved Cards" onPress={() => {}} />
+        <MenuItem icon={LogOut} title="Log Out" onPress={() => {}} />
       </View>
     </ScrollView>
   );
@@ -136,7 +111,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 24,
     elevation: 4,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
@@ -192,7 +167,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
