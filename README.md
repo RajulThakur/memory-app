@@ -2,6 +2,10 @@
 
 A modern, intuitive flashcard application for language learning, built with React Native. The app uses spaced repetition algorithms to optimize your learning experience and help you master new languages effectively.
 
+## Demo
+
+[![Watch the demo](https://res.cloudinary.com/dqglgc5dj/image/upload/v1745247215/Screenshot_2025-04-21_at_20.22.47_pjwqtv.png)](https://res.cloudinary.com/dqglgc5dj/video/upload/v1745246679/demo_zaiui4.mp4)
+
 ## Features
 
 ### 1. Smart Learning System
