@@ -14,11 +14,28 @@ export default function Header({ onOpenThemeModal }: HeaderProps) {
     <View style={[styles.container, { backgroundColor: colors.primary }]}>
       <Text style={[styles.title, { color: '#FFFFFF' }]}>LangApp</Text>
       <View style={styles.themeControls}>
-        <TouchableOpacity onPress={toggleTheme} style={styles.iconButton}>
-          {theme === 'light' ? <Sun size={20} color="#fff" /> : <Moon size={20} color="#fff" />}
+        <TouchableOpacity
+          onPress={toggleTheme}
+          style={styles.iconButton}>
+          {theme === 'light' ? (
+            <Sun
+              size={20}
+              color="#fff"
+            />
+          ) : (
+            <Moon
+              size={20}
+              color="#fff"
+            />
+          )}
         </TouchableOpacity>
-        <TouchableOpacity onPress={onOpenThemeModal} style={styles.iconButton}>
-          <Palette size={20} color="#fff" />
+        <TouchableOpacity
+          onPress={onOpenThemeModal}
+          style={styles.iconButton}>
+          <Palette
+            size={20}
+            color="#fff"
+          />
         </TouchableOpacity>
       </View>
     </View>

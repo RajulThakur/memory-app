@@ -19,8 +19,7 @@ function ColorSchemeButton({ name, color, isSelected, onPress }: ColorSchemeButt
         styles.colorSchemeButton,
         { backgroundColor: color },
         isSelected && styles.selectedScheme,
-      ]}
-    >
+      ]}>
       <Text style={[styles.colorSchemeName, isSelected && styles.selectedSchemeName]}>{name}</Text>
     </Pressable>
   );
@@ -45,15 +44,23 @@ export default function ThemeModal({ visible, onClose }: ThemeModalProps) {
   };
 
   return (
-    <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onClose}>
-      <Pressable style={styles.modalOverlay} onPress={onClose}>
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={onClose}>
+      <Pressable
+        style={styles.modalOverlay}
+        onPress={onClose}>
         <View
           style={[styles.modalContent, { backgroundColor: colors.surface }]}
-          onStartShouldSetResponder={() => true}
-        >
+          onStartShouldSetResponder={() => true}>
           <View style={styles.modalHeader}>
             <Text style={[styles.modalTitle, { color: colors.text }]}>Color Scheme</Text>
-            <Palette size={24} color={colors.primary} />
+            <Palette
+              size={24}
+              color={colors.primary}
+            />
           </View>
 
           <View style={styles.themeOptions}>
@@ -79,16 +86,23 @@ export default function ThemeModal({ visible, onClose }: ThemeModalProps) {
 
           <TouchableOpacity
             style={[styles.darkModeButton, { backgroundColor: colors.primary }]}
-            onPress={handleThemeToggle}
-          >
+            onPress={handleThemeToggle}>
             {theme === 'light' ? (
               <View style={styles.buttonContent}>
-                <MoonIcon size={20} color="#fff" style={styles.buttonIcon} />
+                <MoonIcon
+                  size={20}
+                  color="#fff"
+                  style={styles.buttonIcon}
+                />
                 <Text style={styles.darkModeButtonText}>Switch to Dark Mode</Text>
               </View>
             ) : (
               <View style={styles.buttonContent}>
-                <SunIcon size={20} color="#fff" style={styles.buttonIcon} />
+                <SunIcon
+                  size={20}
+                  color="#fff"
+                  style={styles.buttonIcon}
+                />
                 <Text style={styles.darkModeButtonText}>Switch to Light Mode</Text>
               </View>
             )}

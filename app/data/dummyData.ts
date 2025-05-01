@@ -1,4 +1,4 @@
-import type { DeckMetadata, Flashcard, Language, Category, Difficulty } from '../types';
+import type { DeckMetadata, Language, Category, Difficulty, Flashcard } from '../types';
 
 export interface Deck {
   id: string;
@@ -10,79 +10,7 @@ export interface Deck {
   progress: number;
 }
 
-export interface Flashcard {
-  id: string;
-  front: string;
-  back: string;
-  example: string;
-  lastReviewed?: Date;
-  mastered: boolean;
-  deckId: string;
-}
-
-const dummyDecks: DeckMetadata[] = [
-  {
-    id: 'deck1',
-    name: 'Japanese',
-    description: 'Essential phrases for daily conversation',
-    language: 'japanese' as Language,
-    category: 'phrases' as Category,
-    difficulty: 'beginner' as Difficulty,
-    totalCards: 20,
-    masteredCards: 5,
-    tags: ['basics', 'daily life'],
-    createdAt: new Date(),
-  },
-  {
-    id: 'deck2',
-    name: 'Spanish',
-    description: 'Common Spanish verbs and conjugations',
-    language: 'spanish' as Language,
-    category: 'grammar' as Category,
-    difficulty: 'beginner' as Difficulty,
-    totalCards: 30,
-    masteredCards: 10,
-    tags: ['verbs', 'conjugation'],
-    createdAt: new Date(),
-  },
-  {
-    id: 'deck3',
-    name: 'French',
-    description: 'Words and phrases for traveling in France',
-    language: 'french' as Language,
-    category: 'vocabulary' as Category,
-    difficulty: 'beginner' as Difficulty,
-    totalCards: 25,
-    masteredCards: 15,
-    tags: ['travel', 'vocabulary'],
-    createdAt: new Date(),
-  },
-  {
-    id: 'deck4',
-    name: 'German',
-    description: 'Common German idioms and expressions',
-    language: 'german' as Language,
-    category: 'idioms' as Category,
-    difficulty: 'intermediate' as Difficulty,
-    totalCards: 15,
-    masteredCards: 5,
-    tags: ['idioms', 'expressions'],
-    createdAt: new Date(),
-  },
-  {
-    id: 'deck5',
-    name: 'English',
-    description: 'Business vocabulary and phrases',
-    language: 'english' as Language,
-    category: 'vocabulary' as Category,
-    difficulty: 'intermediate' as Difficulty,
-    totalCards: 40,
-    masteredCards: 20,
-    tags: ['business', 'vocabulary'],
-    createdAt: new Date(),
-  },
-];
-
+// Dummy Cards
 const dummyCards: Record<string, Flashcard[]> = {
   deck1: [
     {
@@ -246,6 +174,75 @@ const dummyCards: Record<string, Flashcard[]> = {
     },
   ],
 };
+
+// Dummy Decks
+const dummyDecks: DeckMetadata[] = [
+  {
+    id: 'deck1',
+    name: 'Japanese',
+    description: 'Essential phrases for daily conversation',
+    language: 'japanese' as Language,
+    category: 'phrases' as Category,
+    difficulty: 'beginner' as Difficulty,
+    totalCards: 20,
+    masteredCards: 5,
+    tags: ['basics', 'daily life'],
+    createdAt: new Date(),
+    deckCards: dummyCards.deck1,
+  },
+  {
+    id: 'deck2',
+    name: 'Spanish',
+    description: 'Common Spanish verbs and conjugations',
+    language: 'spanish' as Language,
+    category: 'grammar' as Category,
+    difficulty: 'beginner' as Difficulty,
+    totalCards: 30,
+    masteredCards: 10,
+    tags: ['verbs', 'conjugation'],
+    createdAt: new Date(),
+    deckCards: dummyCards.deck2,
+  },
+  {
+    id: 'deck3',
+    name: 'French',
+    description: 'Words and phrases for traveling in France',
+    language: 'french' as Language,
+    category: 'vocabulary' as Category,
+    difficulty: 'beginner' as Difficulty,
+    totalCards: 25,
+    masteredCards: 15,
+    tags: ['travel', 'vocabulary'],
+    createdAt: new Date(),
+    deckCards: dummyCards.deck3,
+  },
+  {
+    id: 'deck4',
+    name: 'German',
+    description: 'Common German idioms and expressions',
+    language: 'german' as Language,
+    category: 'idioms' as Category,
+    difficulty: 'intermediate' as Difficulty,
+    totalCards: 15,
+    masteredCards: 5,
+    tags: ['idioms', 'expressions'],
+    createdAt: new Date(),
+    deckCards: dummyCards.deck4,
+  },
+  {
+    id: 'deck5',
+    name: 'English',
+    description: 'Business vocabulary and phrases',
+    language: 'english' as Language,
+    category: 'vocabulary' as Category,
+    difficulty: 'intermediate' as Difficulty,
+    totalCards: 40,
+    masteredCards: 20,
+    tags: ['business', 'vocabulary'],
+    createdAt: new Date(),
+    deckCards: dummyCards.deck5,
+  },
+];
 
 export { dummyDecks, dummyCards };
 export default { dummyDecks, dummyCards };

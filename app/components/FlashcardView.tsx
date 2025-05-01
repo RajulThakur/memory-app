@@ -25,8 +25,7 @@ export default function FlashcardView() {
     <View style={styles.container}>
       <TouchableOpacity
         style={[styles.card, { backgroundColor: colors.surface }]}
-        onPress={handleFlip}
-      >
+        onPress={handleFlip}>
         <View style={styles.cardInner}>
           <Text style={[styles.cardText, { color: colors.text }]}>
             {isFlipped ? currentCard.back : currentCard.front}
@@ -53,8 +52,7 @@ export default function FlashcardView() {
               <TouchableOpacity
                 key={score}
                 style={[styles.scoreButton, { backgroundColor: colors.primary }]}
-                onPress={() => handleScore(score)}
-              >
+                onPress={() => handleScore(score)}>
                 <Text style={styles.scoreButtonText}>{score}</Text>
               </TouchableOpacity>
             ))}

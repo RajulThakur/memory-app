@@ -75,10 +75,12 @@ export default function StatsScreen() {
           {
             backgroundColor: colors.surface,
           },
-        ]}
-      >
+        ]}>
         <View style={[styles.iconContainer, { backgroundColor: color }]}>
-          <Icon size={24} color="#fff" />
+          <Icon
+            size={24}
+            color="#fff"
+          />
         </View>
         <Text style={[styles.statValue, { color: colors.text }]}>{value}</Text>
         <Text style={[styles.statTitle, { color: colors.textSecondary }]}>{title}</Text>
@@ -90,17 +92,26 @@ export default function StatsScreen() {
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={false}
-    >
+      showsVerticalScrollIndicator={false}>
       <View style={styles.statsGrid}>
-        <StatCard title="Total Cards" value={stats.totalCards} icon={Book} color={colors.primary} />
+        <StatCard
+          title="Total Cards"
+          value={stats.totalCards}
+          icon={Book}
+          color={colors.primary}
+        />
         <StatCard
           title="Mastered"
           value={stats.masteredCards}
           icon={Award}
           color={colors.success}
         />
-        <StatCard title="Total Decks" value={stats.totalDecks} icon={Target} color={colors.error} />
+        <StatCard
+          title="Total Decks"
+          value={stats.totalDecks}
+          icon={Target}
+          color={colors.error}
+        />
         <StatCard
           title="Average Mastery"
           value={stats.averageMastery}
@@ -116,8 +127,7 @@ export default function StatsScreen() {
             alignItems: 'center',
             backgroundColor: colors.surface,
           },
-        ]}
-      >
+        ]}>
         <Text style={[styles.chartTitle, { color: colors.text }]}>Deck Mastery</Text>
         <BarChart
           data={chartData}
@@ -148,8 +158,7 @@ export default function StatsScreen() {
             backgroundColor: colors.surface,
             alignItems: 'center',
           },
-        ]}
-      >
+        ]}>
         <Text style={[styles.chartTitle, { color: colors.text }]}>Weekly Progress</Text>
         <LineChart
           data={weeklyProgress}
@@ -202,6 +211,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   container: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 48,
     flex: 1,
   },
   content: {

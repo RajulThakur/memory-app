@@ -1,82 +1,33 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import FlashcardView from './components/FlashcardView';
-import DecksScreen from './screens/DecksScreen';
-import DeckDetailsScreen from './screens/DeckDetailsScreen';
-import AddCardScreen from './screens/AddCardScreen';
-import StatsScreen from './screens/StatsScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import { ThemeProvider, useTheme } from './context/ThemeContext';
-import ThemeModal from './components/ThemeModal';
-import TabBar, { type TabName } from './components/TabBar';
-import Header from './components/Header';
+import TabNavigator from './navigation/TabNavigator';
 import { RootStackParamList } from './types';
+import ReviewScreen from './screens/ReviewScreen';
+import AddCardScreen from './screens/AddCardScreen';
+import ThemeProvider from './context/ThemeContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function MainScreen() {
-  const [activeTab, setActiveTab] = useState<TabName>('review');
-  const [showThemeModal, setShowThemeModal] = useState(false);
-  const { colors } = useTheme();
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'review':
-        return <FlashcardView />;
-      case 'decks':
-        return <DecksScreen />;
-      case 'stats':
-        return <StatsScreen />;
-      case 'profile':
-        return <ProfileScreen />;
-      default:
-        return <FlashcardView />;
-    }
-  };
-
-  return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={colors.statusBar} backgroundColor={colors.primary} animated={true} />
-
-      <Header onOpenThemeModal={() => setShowThemeModal(true)} />
-
-      <ThemeModal visible={showThemeModal} onClose={() => setShowThemeModal(false)} />
-
-      <View style={styles.content}>{renderContent()}</View>
-
-      <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
-    </View>
-  );
-}
-
-export default function App() {
+export default function Navigation() {
   return (
     <ThemeProvider>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Main" component={MainScreen} options={{ title: 'Home' }} />
+        }}>
         <Stack.Screen
-          name="DeckDetails"
-          component={DeckDetailsScreen}
-          options={{ title: 'Deck Details' }}
+          name="MainTabs"
+          component={TabNavigator}
         />
-        <Stack.Screen name="AddCard" component={AddCardScreen} options={{ title: 'Add Card' }} />
+        <Stack.Screen
+          name="Review"
+          component={ReviewScreen}
+        />
+        <Stack.Screen
+          name="AddCard"
+          component={AddCardScreen}
+        />
       </Stack.Navigator>
     </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 5,
-    paddingVertical: 10,
-  },
-});

@@ -11,7 +11,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'react-native', 'prettier'],
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -24,6 +24,16 @@ module.exports = {
     'react-native/no-raw-text': 'warn',
     'react-native/no-single-element-style-arrays': 'warn',
     'react-native/sort-styles': 'warn',
+    'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
+    'react/jsx-sort-props': [
+      'warn',
+      {
+        callbacksLast: true,
+        shorthandFirst: true,
+        ignoreCase: true,
+        reservedFirst: true,
+      },
+    ],
   },
   settings: {
     react: {
@@ -32,6 +42,8 @@ module.exports = {
   },
   env: {
     'react-native/react-native': true,
+    browser: true,
+    es2021: true,
   },
   parserOptions: {
     ecmaFeatures: {

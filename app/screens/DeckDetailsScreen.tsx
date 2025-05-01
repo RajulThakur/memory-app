@@ -1,97 +1,18 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Animated,
-  ScrollView,
-} from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { dummyDecks, dummyCards } from '../data/dummyData';
-import { RotateCcw, Trash2, Check, PlayCircle } from 'lucide-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList, Flashcard } from '../types';
+import { PlayCircle } from 'lucide-react-native';
+import React from 'react';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { dummyCards, dummyDecks } from '../data/dummyData';
+import { Flashcard, RootStackParamList } from '../types';
+import FlashcardItem from '../components/FlashCardItem';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DeckDetails'>;
 
-function FlashcardItem({ card }: { card: Flashcard }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const { colors } = useTheme();
-  const flipAnimation = new Animated.Value(0);
-
-  const flipCard = () => {
-    Animated.spring(flipAnimation, {
-      toValue: isFlipped ? 0 : 180,
-      friction: 8,
-      tension: 10,
-      useNativeDriver: true,
-    }).start();
-    setIsFlipped(!isFlipped);
-  };
-
-  const frontInterpolate = flipAnimation.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['0deg', '180deg'],
-  });
-
-  const backInterpolate = flipAnimation.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['180deg', '360deg'],
-  });
-
-  return (
-    <View style={[styles.cardContainer, { backgroundColor: colors.surface }]}>
-      <TouchableOpacity onPress={flipCard}>
-        <Animated.View
-          style={[
-            styles.card,
-            {
-              transform: [{ rotateY: frontInterpolate }],
-            },
-          ]}
-        >
-          <Text style={[styles.cardText, { color: colors.text }]}>{card.front}</Text>
-        </Animated.View>
-        <Animated.View
-          style={[
-            styles.card,
-            styles.cardBack,
-            {
-              transform: [{ rotateY: backInterpolate }],
-            },
-          ]}
-        >
-          <Text style={[styles.cardText, { color: colors.text }]}>{card.back}</Text>
-          {card.example && (
-            <Text style={[styles.exampleText, { color: colors.textSecondary }]}>
-              Example: {card.example}
-            </Text>
-          )}
-        </Animated.View>
-      </TouchableOpacity>
-      <View style={styles.actions}>
-        <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.error }]}>
-          <Trash2 size={20} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.primary }]}
-          onPress={flipCard}
-        >
-          <RotateCcw size={20} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.success }]}>
-          <Check size={20} color="#fff" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
 const DeckDetailsScreen = ({ route, navigation }: Props) => {
   const { colors } = useTheme();
-  const { deckId } = route.params;
+  // const { deckId } = route.params;
+  const deckId = '1';
   const deck = dummyDecks.find(d => d.id === deckId);
   const deckCards = dummyCards[deckId] || [];
 
@@ -109,16 +30,17 @@ const DeckDetailsScreen = ({ route, navigation }: Props) => {
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
       contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={false}
-    >
+      showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <Text style={[styles.title, { color: colors.text }]}>{deck.name}</Text>
           <TouchableOpacity
             style={[styles.reviewButton, { backgroundColor: colors.primary }]}
-            onPress={() => navigation.navigate('StudySession', { deckId })}
-          >
-            <PlayCircle size={24} color="#fff" />
+            onPress={() => navigation.navigate('StudySession', { deckId })}>
+            <PlayCircle
+              size={24}
+              color="#fff"
+            />
             <Text style={styles.reviewButtonText}>Start Review</Text>
           </TouchableOpacity>
         </View>
@@ -140,44 +62,6 @@ const DeckDetailsScreen = ({ route, navigation }: Props) => {
 export default DeckDetailsScreen;
 
 const styles = StyleSheet.create({
-  actionButton: {
-    alignItems: 'center',
-    borderRadius: 20,
-    height: 40,
-    justifyContent: 'center',
-    width: 40,
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 16,
-  },
-  card: {
-    alignItems: 'center',
-    backfaceVisibility: 'hidden',
-    height: 200,
-    justifyContent: 'center',
-  },
-  cardBack: {
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
-  cardContainer: {
-    borderRadius: 12,
-    elevation: 2,
-    marginBottom: 20,
-    padding: 16,
-    shadowOffset: { height: 2, width: 0 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  cardText: {
-    fontSize: 18,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
   },
@@ -218,13 +102,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
-  },
-  stat: {
-    fontSize: 14,
-  },
-  stats: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   subtitle: {
     fontSize: 16,

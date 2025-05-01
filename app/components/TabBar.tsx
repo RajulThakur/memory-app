@@ -29,22 +29,29 @@ export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
 
   return (
     <View
-      style={[styles.container, { backgroundColor: colors.surface, borderTopColor: colors.border }]}
-    >
+      style={[
+        styles.container,
+        { backgroundColor: colors.surface, borderTopColor: colors.border },
+      ]}>
       {tabs.map(tab => {
         const Icon = tab.icon;
         const isActive = activeTab === tab.name;
         return (
-          <TouchableOpacity key={tab.name} style={styles.tab} onPress={() => onTabChange(tab.name)}>
-            <Icon size={24} color={isActive ? colors.primary : colors.textSecondary} />
+          <TouchableOpacity
+            key={tab.name}
+            style={styles.tab}
+            onPress={() => onTabChange(tab.name)}>
+            <Icon
+              size={24}
+              color={isActive ? colors.primary : colors.textSecondary}
+            />
             <Text
               style={[
                 styles.tabLabel,
                 {
                   color: isActive ? colors.primary : colors.textSecondary,
                 },
-              ]}
-            >
+              ]}>
               {tabLabels[tab.name]}
             </Text>
           </TouchableOpacity>

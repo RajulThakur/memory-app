@@ -13,8 +13,6 @@ import { flashcardService, REVIEW_OPTIONS } from '../services/flashcardService';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../types';
 
-const { width } = Dimensions.get('window');
-
 type Props = NativeStackScreenProps<RootStackParamList, 'Review'>;
 
 function ReviewScreen({ route, navigation }: Props) {
@@ -82,7 +80,10 @@ function ReviewScreen({ route, navigation }: Props) {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <TouchableOpacity onPress={flipCard} activeOpacity={0.9} style={styles.cardContainer}>
+      <TouchableOpacity
+        onPress={flipCard}
+        activeOpacity={0.9}
+        style={styles.cardContainer}>
         <Animated.View
           style={[
             styles.card,
@@ -90,8 +91,7 @@ function ReviewScreen({ route, navigation }: Props) {
               backgroundColor: colors.surface,
               transform: [{ rotateY: frontInterpolate }],
             },
-          ]}
-        >
+          ]}>
           <Text style={[styles.cardText, { color: colors.text }]}>{currentCard.front}</Text>
         </Animated.View>
         <Animated.View
@@ -102,8 +102,7 @@ function ReviewScreen({ route, navigation }: Props) {
               backgroundColor: colors.surface,
               transform: [{ rotateY: backInterpolate }],
             },
-          ]}
-        >
+          ]}>
           <Text style={[styles.cardText, { color: colors.text }]}>{currentCard.back}</Text>
           {currentCard.example && (
             <Text style={[styles.exampleText, { color: colors.textSecondary }]}>
@@ -119,8 +118,7 @@ function ReviewScreen({ route, navigation }: Props) {
             <TouchableOpacity
               key={option.score}
               style={[styles.option, { backgroundColor: option.color }]}
-              onPress={() => handleScore(option.score)}
-            >
+              onPress={() => handleScore(option.score)}>
               <Text style={styles.optionLabel}>{option.label}</Text>
               <Text style={styles.optionDescription}>{option.description}</Text>
             </TouchableOpacity>

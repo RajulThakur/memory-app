@@ -50,17 +50,21 @@ function AddCardScreen({ route, navigation }: Props) {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[styles.button, { backgroundColor: colors.error }]}
-        >
-          <X size={24} color="#fff" />
+          style={[styles.button, { backgroundColor: colors.error }]}>
+          <X
+            size={24}
+            color="#fff"
+          />
         </TouchableOpacity>
         <Text style={[styles.title, { color: colors.text }]}>Add New Card</Text>
         <TouchableOpacity
           onPress={handleAddCard}
           style={[styles.button, { backgroundColor: colors.success }]}
-          disabled={!front.trim() || !back.trim()}
-        >
-          <Check size={24} color="#fff" />
+          disabled={!front.trim() || !back.trim()}>
+          <Check
+            size={24}
+            color="#fff"
+          />
         </TouchableOpacity>
       </View>
 
