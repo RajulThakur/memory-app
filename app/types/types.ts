@@ -1,7 +1,12 @@
 export type RootStackParamList = {
   MainTabs: undefined;
-  Review: { deckId: string };
-  AddCard: { deckId: string };
+  AddCard: undefined;
+  DeckInfo: {
+    deckId: string;
+  };
+  Review: {
+    deckId: string;
+  };
 };
 
 export type TabParamList = {

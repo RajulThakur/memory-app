@@ -27,37 +27,37 @@ export const REVIEW_OPTIONS: ReviewOption[] = [
     score: 0,
     label: 'Blackout',
     description: 'Complete failure to recall the information',
-    color: '#FF0000', // Red
+    color: '#FF6B6B', // Muted Red
   },
   {
     score: 1,
     label: 'Wrong',
     description: 'Incorrect response, but upon seeing the answer, it felt familiar',
-    color: '#FF4500', // OrangeRed
+    color: '#FF9F43', // Muted Orange
   },
   {
     score: 2,
     label: 'Difficult',
     description: 'Correct response after much difficulty',
-    color: '#FFA500', // Orange
+    color: '#FFD93D', // Muted Yellow
   },
   {
     score: 3,
     label: 'Hesitant',
     description: 'Correct response with significant hesitation',
-    color: '#FFD700', // Gold
+    color: '#6BCB77', // Muted Green
   },
   {
     score: 4,
     label: 'Good',
     description: 'Correct response with some hesitation',
-    color: '#32CD32', // LimeGreen
+    color: '#4D96FF', // Muted Blue
   },
   {
     score: 5,
     label: 'Perfect',
     description: 'Perfect response with no hesitation',
-    color: '#008000', // Green
+    color: '#845EC2', // Muted Purple
   },
 ];
 
@@ -114,6 +114,11 @@ class FlashcardService {
     this.currentDeckId = deckId;
     this.currentCardIndex = 0;
     this.currentDeckCards = this.getDueCards(deckId);
+  }
+
+  setDeckCards(cards: FlashcardWithSM2[]) {
+    this.currentDeckCards = cards;
+    this.currentCardIndex = 0;
   }
 
   getCurrentCard(): FlashcardWithSM2 | null {

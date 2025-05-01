@@ -1,49 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { Check, X } from 'lucide-react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Check, X } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import type { RootStackParamList } from '../types/types';
-import { flashcardService } from '../services/flashcardService';
+import { useTheme } from '../context/ThemeContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddCard'>;
 
-function AddCardScreen({ route, navigation }: Props) {
-  const { deckId } = route.params;
+function AddCardScreen({ navigation }: Props) {
   const { colors } = useTheme();
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
   const [example, setExample] = useState('');
 
-  useEffect(() => {
-    flashcardService.setCurrentDeck(deckId);
-  }, [deckId]);
-
-  const handleAddCard = () => {
-    if (!front.trim() || !back.trim()) return;
-
-    flashcardService.addCard(deckId, {
-      front: front.trim(),
-      back: back.trim(),
-      example: example.trim(),
-      deckId,
-    });
-
-    // Clear form
-    setFront('');
-    setBack('');
-    setExample('');
-
-    // Show next card if available
-    const nextCard = flashcardService.moveToNextCard();
-    if (nextCard) {
-      setFront(nextCard.front);
-      setBack(nextCard.back);
-      setExample(nextCard.example || '');
-    } else {
-      navigation.goBack();
-    }
-  };
+  function handleAddCard() {
+    console.log('Adding card:', { front, back, example });
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>

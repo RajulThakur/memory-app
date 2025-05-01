@@ -17,7 +17,6 @@ export default function Stats() {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>Your Progress</Text>
-
       <View style={[styles.progressBar, { backgroundColor: colors.progressTrack }]}>
         <View
           style={[

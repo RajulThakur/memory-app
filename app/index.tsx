@@ -1,33 +1,44 @@
-import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TabNavigator from './navigation/TabNavigator';
-import { RootStackParamList } from './types/types';
-import ReviewScreen from './screens/ReviewScreen';
-import AddCardScreen from './screens/AddCardScreen';
+import React, { useState } from 'react';
 import ThemeProvider from './context/ThemeContext';
+import TabNavigator from './navigation/TabNavigator';
+import AddCardScreen from './screens/AddCardScreen';
+import SplashScreen from './screens/SplashScreen';
+import DeckInfo from './screens/Tab/DeckInfo';
+import { RootStackParamList } from './types/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Navigation() {
+  const [animationCompleted, setAnimationComplete] = useState<boolean>(false);
+  const changeAnimationStatus = (param: boolean) => {
+    setAnimationComplete(param);
+  };
   return (
-    <ThemeProvider>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen
-          name="MainTabs"
-          component={TabNavigator}
-        />
-        <Stack.Screen
-          name="Review"
-          component={ReviewScreen}
-        />
-        <Stack.Screen
-          name="AddCard"
-          component={AddCardScreen}
-        />
-      </Stack.Navigator>
-    </ThemeProvider>
+    <>
+      {!animationCompleted ? (
+        <SplashScreen onFinish={changeAnimationStatus} />
+      ) : (
+        <ThemeProvider>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}>
+            <Stack.Screen
+              name="MainTabs"
+              component={TabNavigator}
+            />
+            <Stack.Screen
+              name="AddCard"
+              component={AddCardScreen}
+            />
+            <Stack.Screen
+              name="DeckInfo"
+              component={DeckInfo}
+            />
+          </Stack.Navigator>
+        </ThemeProvider>
+      )}
+    </>
   );
 }

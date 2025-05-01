@@ -1,13 +1,21 @@
 import DeckCard from '@/app/components/DeckCard';
 import { useTheme } from '@/app/context/ThemeContext';
 import { dummyDecks } from '@/app/data/dummyData';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { PlusIcon } from 'lucide-react-native';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function DecksScreen() {
   const { colors } = useTheme();
-  const router = useRouter();
+  const navigation = useNavigation();
+
+  const handleAddCard = () => {
+    try {
+      navigation.navigate('AddCard');
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -23,18 +31,19 @@ export default function DecksScreen() {
             language={item.language}
             totalCards={item.totalCards}
             masteredCards={item.masteredCards}
-            onPress={() => console.log('Deck pressed')}
+            onPress={() => navigation.navigate('DeckInfo', { deckId: item.id })}
           />
         )}
         contentContainerStyle={styles.list}
       />
-      <TouchableOpacity style={[styles.fab, { backgroundColor: colors.primary }]}>
-        <Text style={styles.fabText}>
-          <PlusIcon
-            stroke={colors.background}
-            size={24}
-          />
-        </Text>
+      <TouchableOpacity
+        style={[styles.fab, { backgroundColor: colors.primary }]}
+        onPress={handleAddCard}
+        activeOpacity={0.8}>
+        <PlusIcon
+          stroke={colors.background}
+          size={24}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -61,11 +70,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 4,
     width: 56,
-  },
-  fabText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
   list: {
     paddingBottom: 20,

@@ -143,7 +143,7 @@ const dummyCards: Record<string, Flashcard[]> = {
       interval: 1,
       repetitions: 0,
       deckId: 'deck4',
-      mastered: true,
+      mastered: false,
     },
   ],
   deck5: [
