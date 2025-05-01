@@ -3,7 +3,7 @@ import ProfileScreen from '@/app/screens/Tab/ProfileScreen';
 import StatsScreen from '@/app/screens/Tab/StatsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BarChart2, Book, Home, Moon, Palette, Sun, User } from 'lucide-react-native';
-import { GestureResponderEvent, StatusBar, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import DecksScreen from '../screens/Tab/DecksScreen';
 import ReviewScreen from '../screens/Tab/ReviewScreen';
 

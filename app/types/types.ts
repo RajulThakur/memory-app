@@ -7,6 +7,10 @@ export type RootStackParamList = {
   Review: {
     deckId: string;
   };
+  ReviewDeck: {
+    deckId: string;
+    language: string;
+  };
 };
 
 export type TabParamList = {

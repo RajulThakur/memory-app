@@ -6,6 +6,7 @@ import AddCardScreen from './screens/AddCardScreen';
 import SplashScreen from './screens/SplashScreen';
 import DeckInfo from './screens/Tab/DeckInfo';
 import { RootStackParamList } from './types/types';
+import CardReviewDeck from './screens/CardReviewDeck';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,6 +36,10 @@ export default function Navigation() {
             <Stack.Screen
               name="DeckInfo"
               component={DeckInfo}
+            />
+            <Stack.Screen
+              name="ReviewDeck"
+              component={CardReviewDeck}
             />
           </Stack.Navigator>
         </ThemeProvider>
