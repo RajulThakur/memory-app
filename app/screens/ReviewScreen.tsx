@@ -11,7 +11,7 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import { flashcardService, REVIEW_OPTIONS } from '../services/flashcardService';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../types';
+import type { RootStackParamList } from '../types/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Review'>;
 

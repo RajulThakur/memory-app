@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 
 import { useTheme } from '../context/ThemeContext';
 import { Check, X } from 'lucide-react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../types';
+import type { RootStackParamList } from '../types/types';
 import { flashcardService } from '../services/flashcardService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddCard'>;

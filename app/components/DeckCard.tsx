@@ -26,7 +26,10 @@ export default function DeckCard({
   return (
     <TouchableOpacity
       style={[styles.card, { backgroundColor: colors.surface }]}
-      onPress={onPress}>
+      onPress={onPress}
+      activeOpacity={0.7} // Add this for lighter tap effect
+      delayPressIn={0} // Remove delay for immediate feedback
+    >
       <View style={styles.cardHeader}>
         <Book
           size={24}
@@ -66,16 +69,16 @@ export default function DeckCard({
 const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
-    elevation: 2,
+    elevation: 1, // Reduced from 2
     marginBottom: 16,
     padding: 16,
     shadowColor: '#000',
     shadowOffset: {
-      height: 2,
+      height: 1, // Reduced from 2
       width: 0,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.08, // Reduced from 0.1
+    shadowRadius: 3, // Reduced from 4
   },
   cardDescription: {
     fontSize: 14,

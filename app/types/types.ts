@@ -1,8 +1,15 @@
-export type Language = 'english' | 'spanish' | 'french' | 'japanese' | 'german';
+export type RootStackParamList = {
+  MainTabs: undefined;
+  Review: { deckId: string };
+  AddCard: { deckId: string };
+};
 
-export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
-
-export type Category = 'vocabulary' | 'grammar' | 'phrases' | 'idioms';
+export type TabParamList = {
+  Home: undefined;
+  Decks: undefined;
+  Stats: undefined;
+  Profile: undefined;
+};
 
 export interface Flashcard {
   id: string;
@@ -11,7 +18,7 @@ export interface Flashcard {
   example: string;
   pronunciation?: string;
   language: Language;
-  category: Category;
+  category?: Category;
   difficulty: Difficulty;
   tags: string[];
   lastReviewed?: Date;
@@ -22,26 +29,18 @@ export interface Flashcard {
   mastered: boolean;
 }
 
-export interface DeckMetadata {
+export interface Deck {
   id: string;
   name: string;
+  description: string;
   language: Language;
-  category: Category;
   difficulty: Difficulty;
   totalCards: number;
   masteredCards: number;
-  description: string;
   tags: string[];
   createdAt: Date;
-  lastStudied?: Date;
+  deckCards: Flashcard[];
 }
-
-export type RootStackParamList = {
-  Main: undefined;
-  AddCard: undefined;
-  DeckDetails: { deckId: string };
-  StudySession: { deckId: string };
-};
 
 export type MainTabParamList = {
   Review: undefined;
@@ -49,3 +48,9 @@ export type MainTabParamList = {
   Stats: undefined;
   Profile: undefined;
 };
+
+export type Language = 'english' | 'spanish' | 'french' | 'japanese' | 'german';
+
+export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
+
+export type Category = 'vocabulary' | 'grammar' | 'phrases' | 'idioms';

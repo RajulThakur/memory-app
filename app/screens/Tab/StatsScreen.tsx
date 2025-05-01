@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Animated, Dimensions } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { dummyDecks } from '../data/dummyData';
+
 import { BarChart, LineChart } from 'react-native-chart-kit';
 import { Award, Clock, Book, Target } from 'lucide-react-native';
+import { useTheme } from '@/app/context/ThemeContext';
+import { dummyDecks } from '@/app/data/dummyData';
 
 const { width } = Dimensions.get('window');
 const chartWidth = width - 32; // 16px padding on each side
@@ -148,6 +149,7 @@ export default function StatsScreen() {
           showBarTops={false}
           fromZero
           yAxisLabel="%"
+          yAxisSuffix="%"
         />
       </View>
 

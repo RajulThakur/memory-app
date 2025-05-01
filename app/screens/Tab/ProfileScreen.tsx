@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
 import { User, Settings, Bell, Bookmark, LogOut, ChevronRight } from 'lucide-react-native';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '@/app/context/ThemeContext';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -90,22 +90,30 @@ export default function ProfileScreen() {
         <MenuItem
           icon={Settings}
           title="Settings"
-          onPress={() => {}}
+          onPress={() => {
+            console.log('Settings');
+          }}
         />
         <MenuItem
           icon={Bell}
           title="Notifications"
-          onPress={() => {}}
+          onPress={() => {
+            console.log('Settings');
+          }}
         />
         <MenuItem
           icon={Bookmark}
           title="Saved Cards"
-          onPress={() => {}}
+          onPress={() => {
+            console.log('Settings');
+          }}
         />
         <MenuItem
           icon={LogOut}
           title="Log Out"
-          onPress={() => {}}
+          onPress={() => {
+            console.log('Settings');
+          }}
         />
       </View>
     </ScrollView>

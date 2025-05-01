@@ -1,14 +1,4 @@
-import type { DeckMetadata, Language, Category, Difficulty, Flashcard } from '../types';
-
-export interface Deck {
-  id: string;
-  name: string;
-  description: string;
-  language: string;
-  totalCards: number;
-  masteredCards: number;
-  progress: number;
-}
+import type { Language, Category, Difficulty, Flashcard, Deck } from '../types/types';
 
 // Dummy Cards
 const dummyCards: Record<string, Flashcard[]> = {
@@ -42,6 +32,21 @@ const dummyCards: Record<string, Flashcard[]> = {
       repetitions: 0,
       deckId: 'deck1',
       mastered: false,
+    },
+    {
+      id: 'card2a',
+      front: 'さようなら',
+      back: 'Goodbye',
+      example: 'さようなら、また会いましょう (Goodbye, see you again)',
+      language: 'japanese' as Language,
+      category: 'phrases' as Category,
+      difficulty: 'beginner' as Difficulty,
+      tags: ['greetings'],
+      ef: 2.5,
+      interval: 1,
+      repetitions: 0,
+      deckId: 'deck1',
+      mastered: true,
     },
   ],
   deck2: [
@@ -138,7 +143,7 @@ const dummyCards: Record<string, Flashcard[]> = {
       interval: 1,
       repetitions: 0,
       deckId: 'deck4',
-      mastered: false,
+      mastered: true,
     },
   ],
   deck5: [
@@ -170,22 +175,21 @@ const dummyCards: Record<string, Flashcard[]> = {
       interval: 1,
       repetitions: 0,
       deckId: 'deck5',
-      mastered: false,
+      mastered: true,
     },
   ],
 };
 
-// Dummy Decks
-const dummyDecks: DeckMetadata[] = [
+// Dummy Decks with correct calculations
+const dummyDecks: Deck[] = [
   {
     id: 'deck1',
     name: 'Japanese',
     description: 'Essential phrases for daily conversation',
     language: 'japanese' as Language,
-    category: 'phrases' as Category,
     difficulty: 'beginner' as Difficulty,
-    totalCards: 20,
-    masteredCards: 5,
+    totalCards: dummyCards.deck1.length,
+    masteredCards: dummyCards.deck1.filter(card => card.mastered).length,
     tags: ['basics', 'daily life'],
     createdAt: new Date(),
     deckCards: dummyCards.deck1,
@@ -195,10 +199,9 @@ const dummyDecks: DeckMetadata[] = [
     name: 'Spanish',
     description: 'Common Spanish verbs and conjugations',
     language: 'spanish' as Language,
-    category: 'grammar' as Category,
     difficulty: 'beginner' as Difficulty,
-    totalCards: 30,
-    masteredCards: 10,
+    totalCards: dummyCards.deck2.length,
+    masteredCards: dummyCards.deck2.filter(card => card.mastered).length,
     tags: ['verbs', 'conjugation'],
     createdAt: new Date(),
     deckCards: dummyCards.deck2,
@@ -208,10 +211,9 @@ const dummyDecks: DeckMetadata[] = [
     name: 'French',
     description: 'Words and phrases for traveling in France',
     language: 'french' as Language,
-    category: 'vocabulary' as Category,
     difficulty: 'beginner' as Difficulty,
-    totalCards: 25,
-    masteredCards: 15,
+    totalCards: dummyCards.deck3.length,
+    masteredCards: dummyCards.deck3.filter(card => card.mastered).length,
     tags: ['travel', 'vocabulary'],
     createdAt: new Date(),
     deckCards: dummyCards.deck3,
@@ -221,10 +223,9 @@ const dummyDecks: DeckMetadata[] = [
     name: 'German',
     description: 'Common German idioms and expressions',
     language: 'german' as Language,
-    category: 'idioms' as Category,
     difficulty: 'intermediate' as Difficulty,
-    totalCards: 15,
-    masteredCards: 5,
+    totalCards: dummyCards.deck4.length,
+    masteredCards: dummyCards.deck4.filter(card => card.mastered).length,
     tags: ['idioms', 'expressions'],
     createdAt: new Date(),
     deckCards: dummyCards.deck4,
@@ -234,10 +235,9 @@ const dummyDecks: DeckMetadata[] = [
     name: 'English',
     description: 'Business vocabulary and phrases',
     language: 'english' as Language,
-    category: 'vocabulary' as Category,
     difficulty: 'intermediate' as Difficulty,
-    totalCards: 40,
-    masteredCards: 20,
+    totalCards: dummyCards.deck5.length,
+    masteredCards: dummyCards.deck5.filter(card => card.mastered).length,
     tags: ['business', 'vocabulary'],
     createdAt: new Date(),
     deckCards: dummyCards.deck5,

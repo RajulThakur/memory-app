@@ -1,8 +1,9 @@
+import DeckCard from '@/app/components/DeckCard';
+import { useTheme } from '@/app/context/ThemeContext';
+import { dummyDecks } from '@/app/data/dummyData';
 import { useRouter } from 'expo-router';
+import { PlusIcon } from 'lucide-react-native';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import DeckCard from '../components/DeckCard';
-import { useTheme } from '../context/ThemeContext';
-import { dummyDecks } from '../data/dummyData';
 
 export default function DecksScreen() {
   const { colors } = useTheme();
@@ -12,6 +13,7 @@ export default function DecksScreen() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         data={dummyDecks}
+        style={{ backgroundColor: colors.background }}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
@@ -27,7 +29,12 @@ export default function DecksScreen() {
         contentContainerStyle={styles.list}
       />
       <TouchableOpacity style={[styles.fab, { backgroundColor: colors.primary }]}>
-        <Text style={styles.fabText}>+</Text>
+        <Text style={styles.fabText}>
+          <PlusIcon
+            stroke={colors.background}
+            size={24}
+          />
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -41,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 28,
     bottom: 16,
-    elevation: 4,
+    elevation: 2,
     height: 56,
     justifyContent: 'center',
     position: 'absolute',
@@ -51,7 +58,7 @@ const styles = StyleSheet.create({
       height: 2,
       width: 0,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.9,
     shadowRadius: 4,
     width: 56,
   },
@@ -61,6 +68,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   list: {
-    padding: 16,
+    paddingBottom: 20,
+    paddingHorizontal: 15,
+    paddingTop: 8,
   },
 });

@@ -1,11 +1,11 @@
+import { useTheme } from '@/app/context/ThemeContext';
+import HomeScreen from '@/app/screens/Tab/HomeScreen';
+import ProfileScreen from '@/app/screens/Tab/ProfileScreen';
+import StatsScreen from '@/app/screens/Tab/StatsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BarChart2, Book, Home, Moon, Palette, Sun, User } from 'lucide-react-native';
 import { GestureResponderEvent, StatusBar, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import DeckDetailsScreen from '../screens/DeckDetailsScreen';
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import StatsScreen from '../screens/StatsScreen';
+import DecksScreen from '../screens/Tab/DecksScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -102,7 +102,7 @@ export default function TabNavigator() {
         />
         <Tab.Screen
           name="DeckDetails"
-          component={DeckDetailsScreen}
+          component={DecksScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Book

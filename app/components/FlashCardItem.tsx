@@ -1,7 +1,7 @@
 import { Check, RotateCcw, Trash2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Flashcard } from '../types';
+import { Flashcard } from '../types/types';
 import { useTheme } from '../context/ThemeContext';
 
 export default function FlashcardItem({ card }: { card: Flashcard }) {

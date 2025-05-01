@@ -1,6 +1,6 @@
+import { useTheme } from '@/app/context/ThemeContext';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -14,9 +14,9 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     fontSize: 24,
