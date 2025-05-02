@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { dummyDecks } from '../data/dummyData';
 import type { RootStackParamList } from '../types/types';
 
-const { width,height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const CARD_WIDTH = (width - 40) / 2; // 32 is total horizontal padding (8 + 8 + 8 + 8)
 const CARD_HEIGHT = height * 0.2; // 20% taller than width
 

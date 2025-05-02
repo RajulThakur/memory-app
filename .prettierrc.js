@@ -9,8 +9,4 @@ module.exports = {
   bracketSameLine: true,
   arrowParens: 'avoid',
   endOfLine: 'auto',
-  importOrder: ['^react', '^react-native', '^@', '^[./]'],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
-  importOrderParserPlugins: ['typescript', 'jsx'],
 };

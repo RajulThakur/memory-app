@@ -1,8 +1,8 @@
+import { Award, BarChart2, Book, Clock, Tag } from 'lucide-react-native';
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { dummyCards } from '../../data/dummyData';
-import { Book, Award, Clock, BarChart2, Tag, HelpCircle } from 'lucide-react-native';
 
 interface Props {
   route: {
@@ -22,7 +22,6 @@ export default function DeckInfo({ route }: Props) {
   const masteredCards = cards.filter(card => card.mastered).length;
   const averageEf = cards.reduce((sum, card) => sum + card.ef, 0) / totalCards;
   const averageInterval = cards.reduce((sum, card) => sum + card.interval, 0) / totalCards;
-  const totalRepetitions = cards.reduce((sum, card) => sum + card.repetitions, 0);
 
   // Get unique tags
   const uniqueTags = Array.from(new Set(cards.flatMap(card => card.tags)));

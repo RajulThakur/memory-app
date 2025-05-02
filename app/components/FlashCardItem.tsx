@@ -1,4 +1,3 @@
-import { Check, RotateCcw, Trash2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Flashcard } from '../types/types';
@@ -59,7 +58,7 @@ export default function FlashcardItem({ card }: { card: Flashcard }) {
       </TouchableOpacity>
       <View style={styles.actions}>
         <TouchableOpacity style={[styles.actionButton, { backgroundColor: colors.error }]}>
-          <Trash2
+          <Trash
             size={20}
             color="#fff"
           />
