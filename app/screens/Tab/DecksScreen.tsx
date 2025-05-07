@@ -4,10 +4,35 @@ import { dummyDecks } from '@/app/data/dummyData';
 import { useNavigation } from '@react-navigation/native';
 import { PlusIcon } from 'lucide-react-native';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { calculateReviewProgress } from '@/app/utils/sm2';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@/app/types/types';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function DecksScreen() {
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
+
+  // Calculate review progress for each deck
+  const decksWithProgress = dummyDecks.map(deck => {
+    // Convert Flashcard[] to SM2Card[]
+    const sm2Cards = deck.deckCards.map(card => ({
+      ef: card.ef,
+      interval: card.interval,
+      repetitions: card.repetitions,
+      nextReviewDate: card.nextReviewDate || new Date(),
+      lastReviewDate: card.lastReviewDate || new Date(),
+    }));
+
+    const progress = calculateReviewProgress(sm2Cards);
+    console.log(`\n=== Deck: ${deck.name} ===`);
+    console.log(`Total Cards: ${progress.totalCards}`);
+    console.log(`Cards to Review: ${progress.cardsToReview}`);
+    console.log(`Mastered Cards: ${progress.masteredCards}`);
+    console.log('===================\n');
+    return { ...deck, progress };
+  });
 
   const handleAddCard = () => {
     try {
@@ -20,17 +45,16 @@ export default function DecksScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
-        data={dummyDecks}
+        data={decksWithProgress}
         style={{ backgroundColor: colors.background }}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <DeckCard
-            name={item.name}
-            description={item.description}
-            language={item.language}
-            totalCards={item.totalCards}
-            masteredCards={item.masteredCards}
+            title={item.name}
+            totalCards={item.progress.totalCards}
+            masteredCards={item.progress.masteredCards}
+            cardsToReview={item.progress.cardsToReview}
             onPress={() => navigation.navigate('DeckInfo', { deckId: item.id })}
           />
         )}

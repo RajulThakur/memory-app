@@ -1,4 +1,3 @@
-import React from 'react';
 import LottieView from 'lottie-react-native';
 
 interface Props {
@@ -13,6 +12,7 @@ export default function SplashScreen({ onFinish }: Props) {
       autoPlay
       loop={false}
       onAnimationFinish={() => onFinish(true)}
+      resizeMode="contain"
     />
   );
 }

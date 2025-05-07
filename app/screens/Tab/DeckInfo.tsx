@@ -1,8 +1,9 @@
-import { Award, BarChart2, Book, Clock, Tag } from 'lucide-react-native';
+import { Award, BarChart2, Book, Clock, Tag, Hash } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import { dummyCards } from '../../data/dummyData';
+import { formatRelativeDate } from '../../utils/DateHelper';
 
 interface Props {
   route: {
@@ -105,6 +106,38 @@ export default function DeckInfo({ route }: Props) {
                 Example: {card.example}
               </Text>
             )}
+            <View style={styles.cardStats}>
+              <View style={styles.statRow}>
+                <Hash
+                  size={16}
+                  color={colors.textSecondary}
+                />
+                <Text style={[styles.statText, { color: colors.textSecondary }]}>
+                  ID: {card.id}
+                </Text>
+              </View>
+              <View style={styles.statRow}>
+                <BarChart2
+                  size={16}
+                  color={colors.textSecondary}
+                />
+                <Text style={[styles.statText, { color: colors.textSecondary }]}>
+                  EF: {card.ef.toFixed(2)}
+                </Text>
+              </View>
+              <View style={styles.statRow}>
+                <Clock
+                  size={16}
+                  color={colors.textSecondary}
+                />
+                <Text style={[styles.statText, { color: colors.textSecondary }]}>
+                  Next:{' '}
+                  {card.nextReviewDate
+                    ? formatRelativeDate(new Date(card.nextReviewDate))
+                    : 'Not set'}
+                </Text>
+              </View>
+            </View>
           </View>
         ))}
       </View>
@@ -194,5 +227,21 @@ const styles = StyleSheet.create({
   cardExample: {
     fontSize: 12,
     fontStyle: 'italic',
+  },
+  cardStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
+  },
+  statRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  statText: {
+    fontSize: 12,
   },
 });

@@ -3,9 +3,12 @@ import { Award, Book, CheckCircle2, Clock, XCircle } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
-import { flashcardService, REVIEW_OPTIONS, ReviewOption } from '../services/flashcardService';
-import { dummyDecks, dummyCards } from '../data/dummyData';
+import { dummyDecks } from '../data/dummyData';
+import { REVIEW_OPTIONS, ReviewOption } from '../services/flashcardService';
 import type { RootStackParamList } from '../types/types';
+import { calculateNextReview, isCardDueForReview } from '../utils/sm2';
+import { formatRelativeDate } from '../utils/DateHelper';
+import Congratulations from '../components/Congratulations';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ReviewDeck'>;
 
@@ -24,12 +27,75 @@ export default function CardReviewDeck({ route, navigation }: Props) {
 
   const deckId = route.params?.deckId || 'deck1';
   const deck = dummyDecks.find(d => d.id === deckId);
-  const cards = deck?.deckCards || [];
+
+  // New logic - filter only cards due for review today
+  const cards = (deck?.deckCards || []).filter(card => {
+    // If card has no nextReviewDate, it's a new card and should be shown
+    if (!card.nextReviewDate) return true;
+
+    // Convert Flashcard to SM2Card format
+    const sm2Card = {
+      ef: card.ef,
+      interval: card.interval,
+      repetitions: card.repetitions,
+      nextReviewDate: card.nextReviewDate,
+      lastReviewDate: card.lastReviewDate || new Date(),
+    };
+
+    return isCardDueForReview(sm2Card);
+  });
+
   const currentCard = cards[currentCardIndex];
+  console.log('current card', currentCard);
+
+  // Log the number of cards due for review
+  console.log(`Cards due for review today: ${cards.length}`);
+
+  // Show message if no cards are due
+  if (cards.length === 0) {
+    return (
+      <Congratulations
+        navigation={navigation}
+        route={route}
+      />
+    );
+  }
 
   const handleScore = (score: number) => {
     if (!currentCard) return;
 
+    // Initialize SM2 state for the card if it doesn't exist
+    const cardSM2 = {
+      ef: currentCard.ef,
+      interval: currentCard.interval,
+      repetitions: currentCard.repetitions,
+      nextReviewDate: currentCard.nextReviewDate || new Date(),
+      lastReviewDate: currentCard.lastReviewDate || new Date(),
+    };
+
+    // Calculate next review using SM2
+    const updatedSM2 = calculateNextReview(cardSM2, score);
+
+    // Log SM2 calculations
+    // console.log('cardId:', currentCard.id);
+    // console.log('Card:', currentCard.front);
+    // console.log('Score:', score);
+    // console.log('Previous EF:', cardSM2.ef);
+    // console.log('New EF:', updatedSM2.ef);
+    // console.log('Previous Interval:', cardSM2.interval);
+    // console.log('New Interval:', updatedSM2.interval);
+    // console.log('Next Review Date:', updatedSM2.nextReviewDate);
+    // console.log('-------------------');
+
+    // Update the card with new SM2 values
+    currentCard.ef = updatedSM2.ef;
+    currentCard.interval = updatedSM2.interval;
+    currentCard.repetitions = updatedSM2.repetitions;
+    currentCard.nextReviewDate = updatedSM2.nextReviewDate;
+    currentCard.lastReviewDate = updatedSM2.lastReviewDate;
+    currentCard.mastered = updatedSM2.interval >= 30;
+
+    // Update review stats
     setReviewStats(prev => ({
       ...prev,
       correct: score >= 3 ? prev.correct + 1 : prev.correct,
@@ -127,14 +193,6 @@ export default function CardReviewDeck({ route, navigation }: Props) {
     );
   }
 
-  if (!currentCard) {
-    return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <Text style={[styles.noCards, { color: colors.text }]}>No cards to review!</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.progressContainer}>
@@ -156,6 +214,18 @@ export default function CardReviewDeck({ route, navigation }: Props) {
             {cards.filter(card => card.mastered).length}/{cards.length} mastered
           </Text>
         </View>
+      </View>
+
+      <View style={styles.cardStats}>
+        <Text style={[styles.cardStatText, { color: colors.textSecondary }]}>
+          EF: {currentCard.ef.toFixed(2)}
+        </Text>
+        <Text style={[styles.cardStatText, { color: colors.textSecondary }]}>
+          Next Review:{' '}
+          {currentCard.nextReviewDate
+            ? formatRelativeDate(new Date(currentCard.nextReviewDate))
+            : 'Not set'}
+        </Text>
       </View>
 
       <TouchableOpacity
@@ -224,6 +294,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+
+  statLabel: {
+    fontSize: 14,
   },
   progressContainer: {
     flexDirection: 'row',
@@ -294,11 +374,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'center',
   },
-  noCards: {
-    fontSize: 20,
-    textAlign: 'center',
-    marginTop: 20,
-  },
+
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -354,12 +430,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
   },
-  statsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
+
   statItem: {
     width: '48%',
     padding: 16,
@@ -372,16 +443,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 8,
   },
-  statLabel: {
-    fontSize: 14,
-  },
   restartButton: {
-    padding: 16,
-    borderRadius: 12,
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 16,
     alignItems: 'center',
   },
   restartButtonText: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  cardStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+    paddingHorizontal: 4,
+  },
+  cardStatText: {
+    fontSize: 14,
   },
 });

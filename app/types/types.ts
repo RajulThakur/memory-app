@@ -11,6 +11,8 @@ export type RootStackParamList = {
     deckId: string;
     language: string;
   };
+  Login: undefined;
+  Signup: undefined;
 };
 
 export type TabParamList = {
@@ -36,6 +38,8 @@ export interface Flashcard {
   repetitions: number;
   deckId: string;
   mastered: boolean;
+  nextReviewDate?: Date;
+  lastReviewDate?: Date;
 }
 
 export interface Deck {

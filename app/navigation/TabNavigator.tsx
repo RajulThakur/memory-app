@@ -2,12 +2,20 @@ import { useTheme } from '@/app/context/ThemeContext';
 import ProfileScreen from '@/app/screens/Tab/ProfileScreen';
 import StatsScreen from '@/app/screens/Tab/StatsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BarChart2, Book, Home, Moon, Palette, Sun, User } from 'lucide-react-native';
-import { GestureResponderEvent, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { GestureResponderEvent, StatusBar, TouchableOpacity, View } from 'react-native';
 import DecksScreen from '../screens/Tab/DecksScreen';
 import ReviewScreen from '../screens/Tab/ReviewScreen';
+import { Moon, Palette, Sun, BookOpen, Library, BarChart2, User } from 'lucide-react-native';
 
-const Tab = createBottomTabNavigator();
+type RootTabParamList = {
+  Review: { deckId: string };
+  DeckDetails: undefined;
+  Stats: undefined;
+  Profile: undefined;
+};
+
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export default function TabNavigator() {
   const { colors, theme, toggleTheme, colorScheme, setColorScheme } = useTheme();
@@ -16,12 +24,12 @@ export default function TabNavigator() {
     <View style={{ flexDirection: 'row', gap: 16, marginRight: 16 }}>
       <TouchableOpacity onPress={toggleTheme}>
         {theme === 'light' ? (
-          <Moon
+          <Sun
             size={24}
             color={colors.primary}
           />
         ) : (
-          <Sun
+          <Moon
             size={24}
             color={colors.primary}
           />
@@ -94,9 +102,9 @@ export default function TabNavigator() {
           initialParams={{ deckId: 'deck1' }}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Home
-                color={color}
+              <BookOpen
                 size={size}
+                color={color}
               />
             ),
           }}
@@ -106,9 +114,9 @@ export default function TabNavigator() {
           component={DecksScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Book
-                color={color}
+              <Library
                 size={size}
+                color={color}
               />
             ),
           }}
@@ -119,8 +127,8 @@ export default function TabNavigator() {
           options={{
             tabBarIcon: ({ color, size }) => (
               <BarChart2
-                color={color}
                 size={size}
+                color={color}
               />
             ),
           }}
@@ -131,8 +139,8 @@ export default function TabNavigator() {
           options={{
             tabBarIcon: ({ color, size }) => (
               <User
-                color={color}
                 size={size}
+                color={color}
               />
             ),
           }}

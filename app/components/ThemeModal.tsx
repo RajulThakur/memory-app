@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Pressable } from 'react-native';
-import { Palette, MoonIcon, SunIcon } from 'lucide-react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import type { ColorScheme } from '../context/ThemeContext';
 
@@ -57,7 +57,8 @@ export default function ThemeModal({ visible, onClose }: ThemeModalProps) {
           onStartShouldSetResponder={() => true}>
           <View style={styles.modalHeader}>
             <Text style={[styles.modalTitle, { color: colors.text }]}>Color Scheme</Text>
-            <Palette
+            <MaterialCommunityIcons
+              name="palette"
               size={24}
               color={colors.primary}
             />
@@ -89,19 +90,19 @@ export default function ThemeModal({ visible, onClose }: ThemeModalProps) {
             onPress={handleThemeToggle}>
             {theme === 'light' ? (
               <View style={styles.buttonContent}>
-                <MoonIcon
-                  size={20}
+                <MaterialCommunityIcons
+                  name="weather-night"
+                  size={24}
                   color="#fff"
-                  style={styles.buttonIcon}
                 />
                 <Text style={styles.darkModeButtonText}>Switch to Dark Mode</Text>
               </View>
             ) : (
               <View style={styles.buttonContent}>
-                <SunIcon
-                  size={20}
+                <MaterialCommunityIcons
+                  name="weather-sunny"
+                  size={24}
                   color="#fff"
-                  style={styles.buttonIcon}
                 />
                 <Text style={styles.darkModeButtonText}>Switch to Light Mode</Text>
               </View>
@@ -171,9 +172,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttonIcon: {
-    marginRight: 8,
   },
   darkModeButtonText: {
     color: '#fff',
