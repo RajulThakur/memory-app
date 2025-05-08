@@ -4,9 +4,6 @@ export type RootStackParamList = {
   DeckInfo: {
     deckId: string;
   };
-  Review: {
-    deckId: string;
-  };
   ReviewDeck: {
     deckId: string;
     language: string;
@@ -16,8 +13,8 @@ export type RootStackParamList = {
 };
 
 export type TabParamList = {
-  Home: undefined;
-  Decks: undefined;
+  Review: undefined;
+  DeckDetails: undefined;
   Stats: undefined;
   Profile: undefined;
 };

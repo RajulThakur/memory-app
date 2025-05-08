@@ -2,6 +2,7 @@ import type { Language, Category, Difficulty, Flashcard, Deck } from '../types/t
 
 //Cont key
 
+
 // Dummy Cards
 const dummyCards: Record<string, Flashcard[]> = {
   deck1: [
@@ -48,7 +49,7 @@ const dummyCards: Record<string, Flashcard[]> = {
       interval: 1,
       repetitions: 0,
       deckId: 'deck1',
-      mastered: true,
+      mastered: false,
     },
   ],
   deck2: [
@@ -177,7 +178,7 @@ const dummyCards: Record<string, Flashcard[]> = {
       interval: 1,
       repetitions: 0,
       deckId: 'deck5',
-      mastered: true,
+      mastered: false,
     },
   ],
 };

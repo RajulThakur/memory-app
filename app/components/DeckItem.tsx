@@ -12,7 +12,7 @@ const CARD_HEIGHT = height * 0.23; // 20% taller than width
 
 type Props = {
   item: (typeof dummyDecks)[0];
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Review'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
 };
 
 export default function DeckItem({ item: deck, navigation }: Props) {

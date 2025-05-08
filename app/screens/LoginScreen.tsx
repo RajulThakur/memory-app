@@ -16,6 +16,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/types';
 import { API_KEY } from '../data/dummyData';
 import { saveToken } from '../utils/saveToken';
+import { saveRefreshToken } from '../utils/refreshToken';
+import { CommonActions } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -79,13 +81,19 @@ export default function LoginScreen({ navigation }: Props) {
         throw new Error(data.error?.message || 'Login failed');
       }
 
-      // Save the token
-      if (data.idToken) {
+      // Save both tokens
+      if (data.idToken && data.refreshToken) {
         await saveToken(data.idToken);
+        await saveRefreshToken(data.refreshToken);
         // Login successful - navigate to main app
-        navigation.replace('MainTabs');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'MainTabs' }],
+          })
+        );
       } else {
-        throw new Error('No authentication token received');
+        throw new Error('No authentication tokens received');
       }
     } catch (error) {
       Alert.alert(

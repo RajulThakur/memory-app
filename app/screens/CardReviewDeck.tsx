@@ -28,10 +28,33 @@ export default function CardReviewDeck({ route, navigation }: Props) {
   const deckId = route.params?.deckId || 'deck1';
   const deck = dummyDecks.find(d => d.id === deckId);
 
-  // New logic - filter only cards due for review today
+  console.log('\n=== DECK REVIEW START ===');
+  console.log(`Deck ID: ${deckId}`);
+  console.log(`Deck Name: ${deck?.name}`);
+  console.log('========================\n');
+
+  // Filter cards that need review
   const cards = (deck?.deckCards || []).filter(card => {
+    console.log('\n--- Card Filtering ---');
+    console.log(`Card ID: ${card.id}`);
+    console.log('Current Properties:');
+    console.log(`  EF: ${card.ef || 'Not set'}`);
+    console.log(`  Interval: ${card.interval || 'Not set'}`);
+    console.log(`  Repetitions: ${card.repetitions || 'Not set'}`);
+    console.log(
+      `  Next Review: ${
+        card.nextReviewDate ? new Date(card.nextReviewDate).toLocaleDateString() : 'Not set'
+      }`
+    );
+    console.log(
+      `  Last Review: ${
+        card.lastReviewDate ? new Date(card.lastReviewDate).toLocaleDateString() : 'Not set'
+      }`
+    );
+
     // If card has no nextReviewDate, it's a new card and should be shown
     if (!card.nextReviewDate) {
+      console.log('\nStatus: New Card - Initializing SM2 Properties');
       // Initialize SM2 properties for new cards
       card.ef = card.ef || 2.5;
       card.interval = card.interval || 1;
@@ -49,17 +72,60 @@ export default function CardReviewDeck({ route, navigation }: Props) {
       lastReviewDate: card.lastReviewDate || new Date(),
     };
 
-    return isCardDueForReview(sm2Card);
+    // Modified: Show all cards for review, even if they're late
+    // This helps verify EF calculations and review intervals
+    const isDue = true; // Always show cards for review
+    console.log(`\nStatus: Card will be shown for review (EF verification mode)`);
+    console.log('-------------------\n');
+    return isDue;
   });
 
   const currentCard = cards[currentCardIndex];
-  console.log('current card', currentCard);
+  console.log('\n=== CURRENT CARD DETAILS ===');
+  console.log(`Card Index: ${currentCardIndex + 1}/${cards.length}`);
+  if (currentCard) {
+    console.log(`Card ID: ${currentCard.id}`);
+    console.log('SM2 Properties:');
+    console.log(`  EF: ${currentCard.ef.toFixed(2)}`);
+    console.log(`  Interval: ${currentCard.interval} days`);
+    console.log(`  Repetitions: ${currentCard.repetitions}`);
+    console.log(
+      `  Next Review: ${
+        currentCard.nextReviewDate
+          ? new Date(currentCard.nextReviewDate).toLocaleDateString()
+          : 'Not set'
+      }`
+    );
+    console.log(
+      `  Last Review: ${
+        currentCard.lastReviewDate
+          ? new Date(currentCard.lastReviewDate).toLocaleDateString()
+          : 'Not set'
+      }`
+    );
+    console.log(`  Mastered: ${currentCard.mastered ? 'Yes' : 'No'}`);
+  }
+  console.log('==========================\n');
 
   // Log the number of cards due for review
-  console.log(`Cards due for review today: ${cards.length}`);
+  console.log('\n=== REVIEW SUMMARY ===');
+  console.log(`Total Cards in Deck: ${deck?.deckCards.length || 0}`);
+  console.log(`Cards Due for Review: ${cards.length}`);
+  console.log(`Mastered Cards: ${cards.filter(card => card.mastered).length}`);
+  console.log('=====================\n');
 
-  // Show message if no cards are due
-  if (cards.length === 0) {
+  // Congratulations screen logic:
+  // 1. Show Congratulations screen if:
+  //    - There are no cards in the deck (cards.length === 0)
+  //    - Current card is undefined (safety check)
+  // 2. This screen appears when:
+  //    - All cards have been reviewed
+  //    - User has completed their daily review session
+  //    - No more cards are available for review
+  if (cards.length === 0 || !currentCard) {
+    console.log('\n=== SHOWING CONGRATULATIONS SCREEN ===');
+    console.log('Reason: No cards available for review');
+    console.log('===============================\n');
     return (
       <Congratulations
         navigation={navigation}
@@ -71,11 +137,25 @@ export default function CardReviewDeck({ route, navigation }: Props) {
   const handleScore = (score: number) => {
     if (!currentCard) return;
 
+    console.log('\n=== SCORE UPDATE ===');
+    console.log(`Card ID: ${currentCard.id}`);
+    console.log('Before Update:');
+    console.log(`  EF: ${currentCard.ef.toFixed(2)}`);
+    console.log(`  Interval: ${currentCard.interval} days`);
+    console.log(`  Repetitions: ${currentCard.repetitions}`);
+    console.log(
+      `  Next Review: ${
+        currentCard.nextReviewDate
+          ? new Date(currentCard.nextReviewDate).toLocaleDateString()
+          : 'Not set'
+      }`
+    );
+
     // Initialize SM2 state for the card if it doesn't exist
     const cardSM2 = {
-      ef: currentCard.ef || 2.5, // Default EF if undefined
-      interval: currentCard.interval || 1, // Default interval if undefined
-      repetitions: currentCard.repetitions || 0, // Default repetitions if undefined
+      ef: currentCard.ef || 2.5,
+      interval: currentCard.interval || 1,
+      repetitions: currentCard.repetitions || 0,
       nextReviewDate: currentCard.nextReviewDate || new Date(),
       lastReviewDate: currentCard.lastReviewDate || new Date(),
     };
@@ -91,6 +171,15 @@ export default function CardReviewDeck({ route, navigation }: Props) {
     currentCard.lastReviewDate = updatedSM2.lastReviewDate;
     currentCard.mastered = updatedSM2.interval >= 30;
 
+    console.log('\nAfter Update:');
+    console.log(`  Score: ${score}`);
+    console.log(`  EF: ${currentCard.ef.toFixed(2)}`);
+    console.log(`  Interval: ${currentCard.interval} days`);
+    console.log(`  Repetitions: ${currentCard.repetitions}`);
+    console.log(`  Next Review: ${new Date(currentCard.nextReviewDate).toLocaleDateString()}`);
+    console.log(`  Mastered: ${currentCard.mastered ? 'Yes' : 'No'}`);
+    console.log('==================\n');
+
     // Update review stats
     setReviewStats(prev => ({
       ...prev,
@@ -105,7 +194,7 @@ export default function CardReviewDeck({ route, navigation }: Props) {
       setShowAnswer(false);
     } else {
       setReviewCompleted(true);
-      // Navigate back to ReviewScreen after a short delay
+      // Only navigate back after showing completion screen
       setTimeout(() => {
         navigation.goBack();
       }, 2000);

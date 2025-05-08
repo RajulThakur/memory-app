@@ -16,6 +16,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/types';
 import { API_KEY } from '../data/dummyData';
 import { saveToken } from '../utils/saveToken';
+import { saveRefreshToken } from '../utils/refreshToken';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -33,6 +34,7 @@ export default function SignupScreen({ navigation }: Props) {
     confirmPassword: '',
   });
 
+  //Validating form
   const validateForm = () => {
     const newErrors = {
       name: '',
@@ -72,6 +74,7 @@ export default function SignupScreen({ navigation }: Props) {
     return !Object.values(newErrors).some(error => error !== '');
   };
 
+  //singin handeling
   const handleSignup = async () => {
     if (!validateForm()) {
       return;
@@ -99,13 +102,14 @@ export default function SignupScreen({ navigation }: Props) {
         throw new Error(data.error?.message || 'Signup failed');
       }
 
-      // Save the token
-      if (data.idToken) {
+      // Save both tokens
+      if (data.idToken && data.refreshToken) {
         await saveToken(data.idToken);
+        await saveRefreshToken(data.refreshToken);
         // Signup successful - navigate to main app
         navigation.replace('MainTabs');
       } else {
-        throw new Error('No authentication token received');
+        throw new Error('No authentication tokens received');
       }
     } catch (error) {
       Alert.alert('Signup Failed', error instanceof Error ? error.message : 'Please try again');

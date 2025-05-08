@@ -1,14 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Animated,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { User, Settings, Bell, Bookmark, LogOut, ChevronRight } from 'lucide-react-native';
 import { useTheme } from '@/app/context/ThemeContext';
 import { dummyDecks } from '@/app/data/dummyData';
 import { calculateReviewProgress } from '@/app/utils/sm2';
+import { getUserData, logout, UserData } from '@/app/utils/getUserData';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/app/types/types';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
+  const navigation = useNavigation<NavigationProp>();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [stats, setStats] = useState({
     totalCardsStudied: 0,
     activeStreak: 0,
@@ -16,7 +32,14 @@ export default function ProfileScreen() {
   });
 
   useEffect(() => {
-    // Calculate statistics when component mounts
+    // Get user data when component mounts
+    const fetchUserData = async () => {
+      const data = await getUserData();
+      setUserData(data);
+    };
+    fetchUserData();
+
+    // Calculate statistics
     calculateStats();
 
     // Animation
@@ -57,7 +80,7 @@ export default function ProfileScreen() {
       .filter(card => card.lastReviewDate)
       .map(card => {
         const date = card.lastReviewDate;
-        return date instanceof Date ? date : new Date(date);
+        return date ? new Date(date) : new Date();
       });
 
     let streak = 0;
@@ -83,6 +106,28 @@ export default function ProfileScreen() {
       activeStreak: streak,
       masteryRate: Math.round(masteryRate),
     });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // Reset any local state if needed
+      setUserData(null);
+      setStats({
+        totalCardsStudied: 0,
+        activeStreak: 0,
+        masteryRate: 0,
+      });
+      // Navigate to login screen using CommonActions
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        })
+      );
+    } catch (error) {
+      Alert.alert('Logout Failed', 'There was a problem logging out. Please try again.');
+    }
   };
 
   const MenuItem = ({
@@ -127,8 +172,10 @@ export default function ProfileScreen() {
             />
           </View>
         </View>
-        <Text style={[styles.name, { color: colors.text }]}>John Doe</Text>
-        <Text style={[styles.email, { color: colors.textSecondary }]}>john.doe@example.com</Text>
+        <Text style={[styles.name, { color: colors.text }]}>{userData?.displayName || 'User'}</Text>
+        <Text style={[styles.email, { color: colors.textSecondary }]}>
+          {userData?.email || 'Loading...'}
+        </Text>
       </View>
 
       <View style={styles.statsContainer}>
@@ -173,9 +220,7 @@ export default function ProfileScreen() {
         <MenuItem
           icon={LogOut}
           title="Log Out"
-          onPress={() => {
-            console.log('Settings');
-          }}
+          onPress={handleLogout}
         />
       </View>
     </ScrollView>
