@@ -7,7 +7,8 @@ import SplashScreen from './screens/SplashScreen';
 import DeckInfo from './screens/Tab/DeckInfo';
 import { RootStackParamList } from './types/types';
 import CardReviewDeck from './screens/CardReviewDeck';
-import ReviewCard from './components/ReviewCard';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -26,6 +27,14 @@ export default function Navigation() {
             screenOptions={{
               headerShown: false,
             }}>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={SignupScreen}
+            />
             <Stack.Screen
               name="MainTabs"
               component={TabNavigator}

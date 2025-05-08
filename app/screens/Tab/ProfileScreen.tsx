@@ -1,14 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
 import { User, Settings, Bell, Bookmark, LogOut, ChevronRight } from 'lucide-react-native';
 import { useTheme } from '@/app/context/ThemeContext';
+import { dummyDecks } from '@/app/data/dummyData';
+import { calculateReviewProgress } from '@/app/utils/sm2';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
+  const [stats, setStats] = useState({
+    totalCardsStudied: 0,
+    activeStreak: 0,
+    masteryRate: 0,
+  });
 
   useEffect(() => {
+    // Calculate statistics when component mounts
+    calculateStats();
+
+    // Animation
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -22,6 +33,57 @@ export default function ProfileScreen() {
       }),
     ]).start();
   }, []);
+
+  const calculateStats = () => {
+    // Calculate total cards studied across all decks
+    const allCards = dummyDecks.flatMap(deck => deck.deckCards);
+    const totalCards = allCards.length;
+
+    // Calculate mastery rate using SM2 progress
+    const sm2Cards = allCards.map(card => ({
+      ef: card.ef || 2.5,
+      interval: card.interval || 1,
+      repetitions: card.repetitions || 0,
+      nextReviewDate: card.nextReviewDate || new Date(),
+      lastReviewDate: card.lastReviewDate || new Date(),
+    }));
+
+    const progress = calculateReviewProgress(sm2Cards);
+    const masteryRate = (progress.masteredCards / totalCards) * 100;
+
+    // Calculate active streak (days with reviews)
+    const today = new Date();
+    const lastReviewDates = allCards
+      .filter(card => card.lastReviewDate)
+      .map(card => {
+        const date = card.lastReviewDate;
+        return date instanceof Date ? date : new Date(date);
+      });
+
+    let streak = 0;
+    const currentDate = new Date(today);
+
+    // Check for reviews in the last 30 days
+    for (let i = 0; i < 30; i++) {
+      const hasReviewOnDate = lastReviewDates.some(
+        date =>
+          date.getDate() === currentDate.getDate() &&
+          date.getMonth() === currentDate.getMonth() &&
+          date.getFullYear() === currentDate.getFullYear()
+      );
+
+      if (!hasReviewOnDate) break;
+
+      streak++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    }
+
+    setStats({
+      totalCardsStudied: totalCards,
+      activeStreak: streak,
+      masteryRate: Math.round(masteryRate),
+    });
+  };
 
   const MenuItem = ({
     icon: Icon,
@@ -71,17 +133,17 @@ export default function ProfileScreen() {
 
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, { color: colors.text }]}>150</Text>
+          <Text style={[styles.statValue, { color: colors.text }]}>{stats.totalCardsStudied}</Text>
           <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Cards Studied</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, { color: colors.text }]}>5</Text>
+          <Text style={[styles.statValue, { color: colors.text }]}>{stats.activeStreak}</Text>
           <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Active Streak</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={[styles.statValue, { color: colors.text }]}>85%</Text>
+          <Text style={[styles.statValue, { color: colors.text }]}>{stats.masteryRate}%</Text>
           <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Mastery Rate</Text>
         </View>
       </View>

@@ -8,10 +8,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/types';
+import { API_KEY } from '../data/dummyData';
+import { saveToken } from '../utils/saveToken';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -21,10 +25,93 @@ export default function SignupScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
-  const handleSignup = () => {
-    // TODO: Implement signup logic
-    console.log('Signup:', { name, email, password, confirmPassword });
+  const validateForm = () => {
+    const newErrors = {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    };
+
+    // Name validation
+    if (!name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Invalid email format';
+    }
+
+    // Password validation
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    // Confirm password validation
+    if (!confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(error => error !== '');
+  };
+
+  const handleSignup = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const ENDPOINT = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`;
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          returnSecureToken: true,
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Signup response:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || 'Signup failed');
+      }
+
+      // Save the token
+      if (data.idToken) {
+        await saveToken(data.idToken);
+        // Signup successful - navigate to main app
+        navigation.replace('MainTabs');
+      } else {
+        throw new Error('No authentication token received');
+      }
+    } catch (error) {
+      Alert.alert('Signup Failed', error instanceof Error ? error.message : 'Please try again');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,14 +137,20 @@ export default function SignupScreen({ navigation }: Props) {
                 {
                   backgroundColor: colors.surface,
                   color: colors.text,
-                  borderColor: colors.border,
+                  borderColor: errors.name ? colors.error : colors.border,
                 },
               ]}
               value={name}
-              onChangeText={setName}
+              onChangeText={text => {
+                setName(text);
+                setErrors(prev => ({ ...prev, name: '' }));
+              }}
               placeholder="Enter your full name"
               placeholderTextColor={colors.textSecondary}
             />
+            {errors.name ? (
+              <Text style={[styles.errorText, { color: colors.error }]}>{errors.name}</Text>
+            ) : null}
           </View>
 
           <View style={styles.inputGroup}>
@@ -68,16 +161,22 @@ export default function SignupScreen({ navigation }: Props) {
                 {
                   backgroundColor: colors.surface,
                   color: colors.text,
-                  borderColor: colors.border,
+                  borderColor: errors.email ? colors.error : colors.border,
                 },
               ]}
               value={email}
-              onChangeText={setEmail}
+              onChangeText={text => {
+                setEmail(text);
+                setErrors(prev => ({ ...prev, email: '' }));
+              }}
               placeholder="Enter your email"
               placeholderTextColor={colors.textSecondary}
               keyboardType="email-address"
               autoCapitalize="none"
             />
+            {errors.email ? (
+              <Text style={[styles.errorText, { color: colors.error }]}>{errors.email}</Text>
+            ) : null}
           </View>
 
           <View style={styles.inputGroup}>
@@ -88,15 +187,21 @@ export default function SignupScreen({ navigation }: Props) {
                 {
                   backgroundColor: colors.surface,
                   color: colors.text,
-                  borderColor: colors.border,
+                  borderColor: errors.password ? colors.error : colors.border,
                 },
               ]}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={text => {
+                setPassword(text);
+                setErrors(prev => ({ ...prev, password: '' }));
+              }}
               placeholder="Create a password"
               placeholderTextColor={colors.textSecondary}
               secureTextEntry
             />
+            {errors.password ? (
+              <Text style={[styles.errorText, { color: colors.error }]}>{errors.password}</Text>
+            ) : null}
           </View>
 
           <View style={styles.inputGroup}>
@@ -107,21 +212,39 @@ export default function SignupScreen({ navigation }: Props) {
                 {
                   backgroundColor: colors.surface,
                   color: colors.text,
-                  borderColor: colors.border,
+                  borderColor: errors.confirmPassword ? colors.error : colors.border,
                 },
               ]}
               value={confirmPassword}
-              onChangeText={setConfirmPassword}
+              onChangeText={text => {
+                setConfirmPassword(text);
+                setErrors(prev => ({ ...prev, confirmPassword: '' }));
+              }}
               placeholder="Confirm your password"
               placeholderTextColor={colors.textSecondary}
               secureTextEntry
             />
+            {errors.confirmPassword ? (
+              <Text style={[styles.errorText, { color: colors.error }]}>
+                {errors.confirmPassword}
+              </Text>
+            ) : null}
           </View>
 
           <TouchableOpacity
             style={[styles.button, { backgroundColor: colors.primary }]}
-            onPress={handleSignup}>
-            <Text style={styles.buttonText}>Create Account</Text>
+            onPress={handleSignup}
+            disabled={loading}>
+            <Text style={styles.buttonText}>
+              {loading ? (
+                <ActivityIndicator
+                  size="small"
+                  color="#fff"
+                />
+              ) : (
+                'Create Account'
+              )}
+            </Text>
           </TouchableOpacity>
 
           <View style={styles.loginContainer}>
@@ -173,6 +296,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
+  },
+  errorText: {
+    fontSize: 12,
+    marginTop: 4,
   },
   button: {
     padding: 16,

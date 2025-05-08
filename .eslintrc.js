@@ -25,6 +25,8 @@ module.exports = {
     'react-native/no-single-element-style-arrays': 'warn',
     'react-native/sort-styles': 'warn',
     'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
+    'import/no-default-export': 'off',
+    'import/prefer-default-export': 'off',
   },
   settings: {
     react: {

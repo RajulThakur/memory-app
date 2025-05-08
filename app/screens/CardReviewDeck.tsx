@@ -31,13 +31,20 @@ export default function CardReviewDeck({ route, navigation }: Props) {
   // New logic - filter only cards due for review today
   const cards = (deck?.deckCards || []).filter(card => {
     // If card has no nextReviewDate, it's a new card and should be shown
-    if (!card.nextReviewDate) return true;
+    if (!card.nextReviewDate) {
+      // Initialize SM2 properties for new cards
+      card.ef = card.ef || 2.5;
+      card.interval = card.interval || 1;
+      card.repetitions = card.repetitions || 0;
+      card.lastReviewDate = card.lastReviewDate || new Date();
+      return true;
+    }
 
-    // Convert Flashcard to SM2Card format
+    // Convert Flashcard to SM2Card format with default values
     const sm2Card = {
-      ef: card.ef,
-      interval: card.interval,
-      repetitions: card.repetitions,
+      ef: card.ef || 2.5,
+      interval: card.interval || 1,
+      repetitions: card.repetitions || 0,
       nextReviewDate: card.nextReviewDate,
       lastReviewDate: card.lastReviewDate || new Date(),
     };
@@ -66,26 +73,15 @@ export default function CardReviewDeck({ route, navigation }: Props) {
 
     // Initialize SM2 state for the card if it doesn't exist
     const cardSM2 = {
-      ef: currentCard.ef,
-      interval: currentCard.interval,
-      repetitions: currentCard.repetitions,
+      ef: currentCard.ef || 2.5, // Default EF if undefined
+      interval: currentCard.interval || 1, // Default interval if undefined
+      repetitions: currentCard.repetitions || 0, // Default repetitions if undefined
       nextReviewDate: currentCard.nextReviewDate || new Date(),
       lastReviewDate: currentCard.lastReviewDate || new Date(),
     };
 
     // Calculate next review using SM2
     const updatedSM2 = calculateNextReview(cardSM2, score);
-
-    // Log SM2 calculations
-    // console.log('cardId:', currentCard.id);
-    // console.log('Card:', currentCard.front);
-    // console.log('Score:', score);
-    // console.log('Previous EF:', cardSM2.ef);
-    // console.log('New EF:', updatedSM2.ef);
-    // console.log('Previous Interval:', cardSM2.interval);
-    // console.log('New Interval:', updatedSM2.interval);
-    // console.log('Next Review Date:', updatedSM2.nextReviewDate);
-    // console.log('-------------------');
 
     // Update the card with new SM2 values
     currentCard.ef = updatedSM2.ef;

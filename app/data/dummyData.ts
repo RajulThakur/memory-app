@@ -1,5 +1,7 @@
 import type { Language, Category, Difficulty, Flashcard, Deck } from '../types/types';
 
+//Cont key
+
 // Dummy Cards
 const dummyCards: Record<string, Flashcard[]> = {
   deck1: [
@@ -184,7 +186,7 @@ const dummyCards: Record<string, Flashcard[]> = {
 const dummyDecks: Deck[] = [
   {
     id: 'deck1',
-    name: 'Japanese',
+    name: 'Japanese Daily Word',
     description: 'Essential phrases for daily conversation',
     language: 'japanese' as Language,
     difficulty: 'beginner' as Difficulty,
@@ -196,7 +198,7 @@ const dummyDecks: Deck[] = [
   },
   {
     id: 'deck2',
-    name: 'Spanish',
+    name: 'Spanish Office',
     description: 'Common Spanish verbs and conjugations',
     language: 'spanish' as Language,
     difficulty: 'beginner' as Difficulty,
@@ -208,7 +210,7 @@ const dummyDecks: Deck[] = [
   },
   {
     id: 'deck3',
-    name: 'French',
+    name: 'French Tourist',
     description: 'Words and phrases for traveling in France',
     language: 'french' as Language,
     difficulty: 'beginner' as Difficulty,
@@ -220,7 +222,7 @@ const dummyDecks: Deck[] = [
   },
   {
     id: 'deck4',
-    name: 'German',
+    name: 'German Daily Life',
     description: 'Common German idioms and expressions',
     language: 'german' as Language,
     difficulty: 'intermediate' as Difficulty,
@@ -232,7 +234,7 @@ const dummyDecks: Deck[] = [
   },
   {
     id: 'deck5',
-    name: 'English',
+    name: 'English Office',
     description: 'Business vocabulary and phrases',
     language: 'english' as Language,
     difficulty: 'intermediate' as Difficulty,

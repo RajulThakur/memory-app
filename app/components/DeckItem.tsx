@@ -1,13 +1,14 @@
-import { Book, CheckCircle2 } from 'lucide-react-native';
+import { Book, CheckCircle2, Clock } from 'lucide-react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { dummyDecks } from '../data/dummyData';
 import type { RootStackParamList } from '../types/types';
+import { calculateReviewProgress } from '../utils/sm2';
 
 const { width, height } = Dimensions.get('window');
 const CARD_WIDTH = (width - 40) / 2; // 32 is total horizontal padding (8 + 8 + 8 + 8)
-const CARD_HEIGHT = height * 0.2; // 20% taller than width
+const CARD_HEIGHT = height * 0.23; // 20% taller than width
 
 type Props = {
   item: (typeof dummyDecks)[0];
@@ -15,9 +16,20 @@ type Props = {
 };
 
 export default function DeckItem({ item: deck, navigation }: Props) {
-  const completionPercentage = (deck.masteredCards / deck.totalCards) * 100;
-  const isCompleted = completionPercentage === 100;
   const { colors } = useTheme();
+
+  // Calculate progress using SM2 data
+  const sm2Cards = deck.deckCards.map(card => ({
+    ef: card.ef,
+    interval: card.interval,
+    repetitions: card.repetitions,
+    nextReviewDate: card.nextReviewDate || new Date(),
+    lastReviewDate: card.lastReviewDate || new Date(),
+  }));
+
+  const progress = calculateReviewProgress(sm2Cards);
+  const completionPercentage = (progress.masteredCards / progress.totalCards) * 100;
+  const isCompleted = completionPercentage === 100;
 
   const handleStartReview = (deckId: string) => {
     const deck = dummyDecks.find(d => d.id === deckId);
@@ -47,7 +59,7 @@ export default function DeckItem({ item: deck, navigation }: Props) {
             size={16}
             color={colors.primary}
           />
-          <Text style={[styles.statText, { color: colors.text }]}>{deck.totalCards} cards</Text>
+          <Text style={[styles.statText, { color: colors.text }]}>{progress.totalCards} cards</Text>
         </View>
         <View style={styles.statItem}>
           <CheckCircle2
@@ -55,10 +67,22 @@ export default function DeckItem({ item: deck, navigation }: Props) {
             color={isCompleted ? colors.success : colors.primary}
           />
           <Text style={[styles.statText, { color: isCompleted ? colors.success : colors.text }]}>
-            {deck.masteredCards} mastered
+            {progress.masteredCards} mastered
           </Text>
         </View>
       </View>
+
+      {progress.cardsToReview > 0 && (
+        <View style={styles.dueCardsContainer}>
+          <Clock
+            size={16}
+            color={colors.primary}
+          />
+          <Text style={[styles.dueCardsText, { color: colors.primary }]}>
+            {progress.cardsToReview} cards due today
+          </Text>
+        </View>
+      )}
 
       <View style={styles.progressContainer}>
         <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
@@ -147,5 +171,15 @@ const styles = StyleSheet.create({
   startButtonText: {
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  dueCardsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 8,
+  },
+  dueCardsText: {
+    fontSize: 12,
+    fontWeight: '500',
   },
 });
